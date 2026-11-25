@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/*
+ * Daily Level Up 디자인 토큰
+ * 색을 바꾸고 싶으면 여기 한 곳만 수정하면 전체 화면에 반영됩니다.
+ */
+@theme {
+  /* 파스텔 배경 */
+  --color-sky: #dff3ff;
+  --color-mint: #d9f7e8;
+  --color-peach: #ffe5d4;
+  --color-lavender: #ece6ff;
+  --color-butter: #fff6c9;
+
+  /* 메인 강조색 */
+  --color-primary: #7c6cf0;
+  --color-primary-dark: #5f4fd6;
+  --color-honey: #ffb84d;
+
+  /* 게임 자원 색 */
+  --color-xp: #4fc38a;
+  --color-coin: #ffc93c;
+
+  /* 글자색 */
+  --color-ink: #3b3660;
+  --color-ink-soft: #6f6a8f;
+
+  --font-sans: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(180deg, #dff3ff 0%, #ece6ff 55%, #fff6c9 100%) fixed;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* 터치 시 파란 하이라이트 제거 (버튼은 직접 디자인) */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 키보드 포커스는 누구나 잘 보이게 */
+:focus-visible {
+  outline: 4px solid var(--color-honey);
+  outline-offset: 3px;
+}

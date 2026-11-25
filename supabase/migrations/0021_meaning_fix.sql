@@ -1,0 +1,33 @@
+-- 0021: 뜻이 겹치던 단어의 뜻을 구분되게 수정
+-- 0020 을 먼저 실행한 뒤, SQL Editor 에 붙여넣고 Run 하세요.
+begin;
+update public.english_words set meaning_ko = '녀석,놈' where word = 'guy';
+update public.english_words set meaning_ko = '떠나서,부재중인' where word = 'away';
+update public.english_words set meaning_ko = '관광' where word = 'tour';
+update public.english_words set meaning_ko = '여행' where word = 'trip';
+update public.english_words set meaning_ko = '접시,요리' where word = 'dish';
+update public.english_words set meaning_ko = '배(과일)' where word = 'pear';
+update public.english_words set meaning_ko = '배(선박)' where word = 'ship';
+update public.english_words set meaning_ko = '바라보다,보기' where word = 'look';
+update public.english_words set meaning_ko = '보다,알다' where word = 'see';
+update public.english_words set meaning_ko = '알려 주다' where word = 'tell';
+update public.english_words set meaning_ko = '이야기하다' where word = 'talk';
+update public.english_words set meaning_ko = '축구(사커)' where word = 'soccer';
+update public.english_words set meaning_ko = '축구' where word = 'football';
+update public.english_words set meaning_ko = '저녁 식사' where word = 'dinner';
+update public.english_words set meaning_ko = '저녁 무렵' where word = 'evening';
+update public.english_words set meaning_ko = '입구,대문' where word = 'gate';
+update public.english_words set meaning_ko = '문' where word = 'door';
+update public.english_words set meaning_ko = '그 (관사)' where word = 'the';
+update public.english_words set meaning_ko = '그' where word = 'he';
+update public.english_words set meaning_ko = '챙 달린 모자' where word = 'cap';
+update public.english_words set meaning_ko = '모자' where word = 'hat';
+update public.english_words set meaning_ko = '마음(감정)' where word = 'heart';
+update public.english_words set meaning_ko = '정신,생각' where word = 'mind';
+update public.english_words set meaning_ko = '많은(수)' where word = 'many';
+update public.english_words set meaning_ko = '많은(양)' where word = 'much';
+update public.english_words set meaning_ko = '나무' where word = 'tree';
+update public.english_words set meaning_ko = '목재' where word = 'wood';
+update public.english_words set meaning_ko = '말하다' where word = 'speak';
+update public.english_words set meaning_ko = '보다,만나다' where word = 'see';
+commit;
