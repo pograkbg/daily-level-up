@@ -169,7 +169,7 @@ export function EnglishQuiz({ level, items, startIndex = 0, startScore = 0 }: En
   const panelTone = feedback ? (feedback.correct ? "bg-xp/15 border-xp" : "bg-red-100 border-red-300") : "";
 
   return (
-    <div className="mx-auto flex w-full max-w-[960px] flex-col gap-5">
+    <div className="mx-auto flex w-full max-w-[960px] flex-col gap-5 [@media(max-height:860px)]:gap-2">
       {/* 상단: 닫기, 레벨, 진행 */}
       <div className="flex items-center gap-4">
         <Link
@@ -274,7 +274,7 @@ export function EnglishQuiz({ level, items, startIndex = 0, startScore = 0 }: En
           )}
 
           {feedback && (
-            <section className={`flex flex-col gap-3 rounded-2xl border-2 p-5 ${panelTone}`} aria-live="polite">
+            <section className={`flex flex-col gap-3 rounded-2xl border-2 p-5 [@media(max-height:860px)]:gap-2 [@media(max-height:860px)]:p-3 ${panelTone}`} aria-live="polite">
               <p className="text-xl font-extrabold text-ink sm:text-2xl">
                 {feedback.correct ? "🎉 정답이에요! +5 XP" : `아쉬워요. 정답은 "${feedback.correctMeaning}"`}
               </p>
@@ -310,7 +310,7 @@ export function EnglishQuiz({ level, items, startIndex = 0, startScore = 0 }: En
       </div>
 
       {/* 하단 출처 */}
-      <footer className="flex flex-col gap-3 pb-2 text-sm text-ink-soft sm:flex-row sm:justify-center sm:gap-10 sm:text-base">
+      <footer className="flex flex-col gap-2 pb-1 text-xs text-ink-soft sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-1 sm:text-sm [@media(max-height:860px)]:pb-0">
         <div className="flex flex-col items-center gap-1 text-center">
           <p className="text-base font-extrabold text-ink sm:text-lg">API 출처</p>
           <p>

@@ -53,7 +53,7 @@ export function StatsCard({ math, english, wrongMath, wrongEnglish }: StatsCardP
         : "👏 꾸준히 잘하고 있어요";
 
   return (
-    <Card className="flex flex-col gap-1 py-3">
+    <Card className="flex flex-col gap-1 py-3 [@media(max-height:860px)]:py-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-lg font-extrabold text-ink">학습 기록 (코칭)</p>
         <div className="flex flex-wrap items-center gap-3">

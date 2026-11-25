@@ -19,7 +19,7 @@ export default async function ForestPage() {
   const grown = new Set<InsectId>(profile.collection);
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
+    <div className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8 [@media(max-height:860px)]:gap-3 [@media(max-height:860px)]:py-3">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-extrabold text-ink">🌳 배움의 숲</h1>
@@ -37,7 +37,7 @@ export default async function ForestPage() {
 
       {profile.pendingNewCharacter && <NewFriendPicker collection={profile.collection} />}
 
-      <section aria-label="친구 도감" className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <section aria-label="친구 도감" className="grid grid-cols-2 gap-4 md:grid-cols-4 [@media(max-height:860px)]:gap-3">
         {INSECTS.map((insect) => {
           const isCurrent = insect.id === profile.characterId && !profile.pendingNewCharacter;
           const isGrown = grown.has(insect.id);
@@ -48,18 +48,18 @@ export default async function ForestPage() {
           return (
             <Card
               key={insect.id}
-              className={`flex h-full flex-col items-center gap-3 p-5 text-center ${
+              className={`flex h-full flex-col items-center gap-3 p-5 text-center [@media(max-height:860px)]:gap-2 [@media(max-height:860px)]:p-3 ${
                 isCurrent ? "border-primary" : ""
               } ${unlocked ? "" : "opacity-70"}`}
             >
               <span className={`rounded-full px-3 py-1 text-sm font-bold ${statusClass}`}>{status}</span>
               <div
                 aria-hidden
-                className={`flex h-24 w-24 items-center justify-center rounded-full text-6xl ${
+                className={`flex h-24 w-24 items-center justify-center rounded-full text-6xl [@media(max-height:860px)]:h-16 [@media(max-height:860px)]:w-16 ${
                   unlocked ? "bg-mint" : "bg-ink/5 grayscale"
                 }`}
               >
-                <InsectGlyph icon={insect.icon} className="h-20 w-20 text-6xl" />
+                <InsectGlyph icon={insect.icon} className="h-20 w-20 text-6xl [@media(max-height:860px)]:h-12 [@media(max-height:860px)]:w-12 [@media(max-height:860px)]:text-4xl" />
               </div>
               <p className="text-xl font-extrabold text-ink">{insect.name}</p>
               <p className="text-sm font-bold text-ink-soft">{insect.habitat}에 살아요</p>
