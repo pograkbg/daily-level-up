@@ -35,7 +35,7 @@ export function HomeHeader({ profile, isAdmin = false, loginEmail = null }: Home
   return (
     <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-4">
-        <DragonMascot className="h-28 w-28 shrink-0 drop-shadow-md sm:h-32 sm:w-32" />
+        <DragonMascot className="h-28 w-28 shrink-0 drop-shadow-md sm:h-32 sm:w-32 [@media(max-height:860px)]:h-20 [@media(max-height:860px)]:w-20" />
         <div className="relative min-w-[20rem] rounded-3xl bg-white px-7 py-5 shadow-md sm:min-w-[26rem]">
           <p className="text-2xl font-extrabold leading-snug text-ink sm:text-3xl">
             <span className="whitespace-nowrap">{greetingName(profile.nickname)}.</span>
