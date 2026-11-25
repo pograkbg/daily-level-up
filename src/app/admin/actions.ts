@@ -11,6 +11,7 @@ import {
   setChildMathLevels,
 } from "@/lib/data/admin-repository";
 import { sendMail, siteUrl } from "@/lib/mail/send";
+import { approvalMail } from "@/lib/mail/templates";
 import type { ActionResult } from "@/types/game";
 
 /** 계정 중지 또는 중지 해제 */
@@ -91,11 +92,7 @@ export async function setApprovalAction(userId: string, approved: boolean): Prom
   if (result.ok) {
     revalidatePath("/admin");
     if (target && !target.approved) {
-      await sendMail({
-        to: [target.email],
-        subject: "[오늘의 미션] 가입이 승인됐어요",
-        text: `가입이 승인되었어요. 이제 아래 주소에서 로그인해 주세요.\n\n${siteUrl()}/login`,
-      });
+      await sendMail({ to: [target.email], ...approvalMail(`${siteUrl()}/login`) });
     }
   }
   return result;

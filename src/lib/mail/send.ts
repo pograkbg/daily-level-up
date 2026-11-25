@@ -14,6 +14,8 @@ export interface MailInput {
   to: string[];
   subject: string;
   text: string;
+  /** HTML 본문. 없으면 글자 본문(text)만 보냅니다. */
+  html?: string;
 }
 
 let transporter: Transporter | null = null;
@@ -52,6 +54,7 @@ export async function sendMail(input: MailInput): Promise<boolean> {
       to: input.to.join(", "),
       subject: input.subject,
       text: input.text,
+      html: input.html,
     });
     console.info(`[mail] 발송 성공: 서버 응답 ${info.response ?? "(없음)"}, 거부된 주소 ${(info.rejected ?? []).length}개`);
     return true;

@@ -9,6 +9,7 @@
 import { redirect } from "next/navigation";
 import type { AuthState } from "@/app/login/actions";
 import { adminNotifyAddresses, sendMail, siteUrl } from "@/lib/mail/send";
+import { signupRequestMail } from "@/lib/mail/templates";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 function fail(error: string): AuthState {
@@ -48,11 +49,8 @@ export async function signupAction(_prev: AuthState, formData: FormData): Promis
   );
   if (isNewAccount) {
     const when = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
-    await sendMail({
-      to: adminAddresses,
-      subject: "[오늘의 미션] 가입 승인 요청",
-      text: `새 가입 신청이 들어왔어요.\n\n신청 이메일: ${email}\n신청 시각: ${when} (한국 시간)\n\n관리자 화면에서 승인해 주세요.\n${siteUrl()}/admin`,
-    });
+    const mail = signupRequestMail({ applicantEmail: email, requestedAt: when, adminLink: `${siteUrl()}/admin` });
+    await sendMail({ to: adminAddresses, ...mail });
   }
 
   if (!data.session) {
