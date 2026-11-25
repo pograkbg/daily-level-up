@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { EnglishQuiz } from "@/components/english/EnglishQuiz";
+import { FitToHeight } from "@/components/ui/FitToHeight";
 import { Card } from "@/components/ui/Card";
 import { buttonClassName } from "@/components/ui/Button";
 import { hasChildProfile } from "@/lib/data/child-repository";
@@ -58,12 +59,14 @@ export default async function EnglishQuizPage({
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[960px] flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
       {result.ok ? (
-        <EnglishQuiz
-          level={level}
-          items={result.data.items}
-          startIndex={result.data.startIndex ?? 0}
-          startScore={result.data.score ?? 0}
-        />
+        <FitToHeight>
+          <EnglishQuiz
+            level={level}
+            items={result.data.items}
+            startIndex={result.data.startIndex ?? 0}
+            startScore={result.data.score ?? 0}
+          />
+        </FitToHeight>
       ) : (
         <Card className="text-center">
           <p role="alert" className="font-bold text-red-500">

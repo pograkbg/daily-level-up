@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { MissionScreen } from "@/components/mission/MissionScreen";
+import { FitToHeight } from "@/components/ui/FitToHeight";
 import { hasChildProfile } from "@/lib/data/child-repository";
 import { getHomeData } from "@/lib/data/home-repository";
 import { getMissionView } from "@/lib/data/mission-repository";
@@ -15,5 +16,9 @@ export default async function MissionPage() {
   }
   const [view, home] = await Promise.all([getMissionView(), getHomeData()]);
   const bgmSrc = BGM_BY_BAND[bandForProgress(home.profile.progress)];
-  return <MissionScreen initialView={view} bgmSrc={bgmSrc} />;
+  return (
+    <FitToHeight>
+      <MissionScreen initialView={view} bgmSrc={bgmSrc} />
+    </FitToHeight>
+  );
 }
