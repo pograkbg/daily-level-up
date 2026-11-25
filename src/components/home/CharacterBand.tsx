@@ -59,11 +59,11 @@ export function CharacterBand({ profile, character }: CharacterBandProps) {
   const levelInfo = getLevelInfo(profile.characterXp);
 
   return (
-    <Card className="flex flex-col gap-2 py-1 md:grid md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,0.75fr)] md:items-center md:gap-6 md:py-3">
+    <Card className="flex flex-col gap-2 py-1 md:grid md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,0.75fr)] md:items-center md:gap-6 md:py-3 [@media(max-height:860px)]:py-1">
       <div className="flex min-w-0 items-center gap-4">
         <div
           aria-hidden
-          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-mint text-4xl shadow-inner sm:h-24 sm:w-24 sm:text-6xl"
+          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-mint text-4xl shadow-inner sm:h-24 sm:w-24 sm:text-6xl [@media(max-height:860px)]:h-16 [@media(max-height:860px)]:w-16 [@media(max-height:860px)]:text-4xl"
         >
           <InsectGlyph icon={character.emoji} className="h-12 w-12 text-4xl sm:h-20 sm:w-20 sm:text-6xl" />
         </div>
@@ -99,7 +99,7 @@ export function CharacterBand({ profile, character }: CharacterBandProps) {
 
       <Link
         href="/forest"
-        className="flex min-h-24 w-full items-center justify-center gap-3 rounded-3xl bg-butter px-6 py-4 text-xl font-extrabold text-ink shadow-[0_6px_0_0_#e8d88a] transition duration-100 active:translate-y-1 sm:text-2xl"
+        className="flex min-h-24 w-full items-center justify-center gap-3 rounded-3xl bg-butter px-6 py-4 text-xl font-extrabold text-ink shadow-[0_6px_0_0_#e8d88a] transition duration-100 active:translate-y-1 sm:text-2xl [@media(max-height:860px)]:min-h-16 [@media(max-height:860px)]:py-2"
       >
         🌳 배움의 숲 가기
       </Link>

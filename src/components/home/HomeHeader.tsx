@@ -20,7 +20,8 @@ function greetingName(name: string): string {
 }
 
 /** 상단 알약 한 종류의 모양. 같은 높이·같은 둥근 모양을 써서 한 줄이 통일돼 보이게 합니다. */
-const PILL = "flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-3 font-bold text-ink shadow-md";
+const PILL =
+  "flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-3 font-bold text-ink shadow-md [@media(max-height:860px)]:h-11";
 
 /**
  * 상단 요약 (대시보드).
@@ -46,28 +47,28 @@ export function HomeHeader({ profile, isAdmin = false, loginEmail = null }: Home
 
       <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3 md:w-[46rem]">
         <ResourceChip
-          className="h-14 w-full justify-center"
+          className="h-14 w-full justify-center [@media(max-height:860px)]:h-11"
           icon="🏆"
           label="캐릭터 레벨"
           value={`Lv. ${levelInfo.level}`}
           title="지금 키우는 친구의 레벨이에요. 성충(레벨 9)이 되면 새 친구를 고를 수 있어요."
         />
         <ResourceChip
-          className="h-14 w-full justify-center"
+          className="h-14 w-full justify-center [@media(max-height:860px)]:h-11"
           icon="⭐"
           label="누적 경험치"
           value={profile.totalXp.toLocaleString("ko-KR")}
           title="지금까지 모은 경험치 전체예요. 줄어들지 않아요."
         />
         <ResourceChip
-          className="h-14 w-full justify-center"
+          className="h-14 w-full justify-center [@media(max-height:860px)]:h-11"
           icon="🪙"
           label="보유 코인"
           value={profile.coins.toLocaleString("ko-KR")}
           title="통장에 모인 코인 잔액이에요. 미션을 끝내면 쌓여요."
         />
         <ResourceChip
-          className="h-14 w-full justify-center"
+          className="h-14 w-full justify-center [@media(max-height:860px)]:h-11"
           icon="🔥"
           label="연속 학습"
           value={`${profile.streakDays}일`}
