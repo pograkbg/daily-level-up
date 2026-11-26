@@ -18,7 +18,7 @@ export async function createChildAction(_prev: SetupState, formData: FormData): 
   if (nickname.length < 1 || nickname.length > 20) {
     return { error: "이름은 1~20글자로 입력해 주세요." };
   }
-  if (![2, 3, 4, 5, 6].includes(grade)) {
+  if (![0, 1, 2, 3, 4, 5, 6].includes(grade)) {
     return { error: "학년을 확인해 주세요." };
   }
   if (!INSECT_IDS.includes(characterId)) {
@@ -27,7 +27,7 @@ export async function createChildAction(_prev: SetupState, formData: FormData): 
 
   const result = await createChildProfile({
     nickname,
-    grade: grade as 2 | 3 | 4 | 5 | 6,
+    grade: grade as 0 | 1 | 2 | 3 | 4 | 5 | 6,
     characterId,
   });
   if (!result.ok) {

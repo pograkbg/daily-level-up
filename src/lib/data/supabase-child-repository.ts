@@ -3,6 +3,7 @@
  * RLS 정책 children_owner_insert 때문에 본인(부모) 계정으로만 추가됩니다.
  */
 
+import { schoolYear } from "@/lib/game/grade";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/types/game";
 import type { ChildSetupInput } from "./child-repository";
@@ -32,6 +33,7 @@ export async function supabaseCreateChild(input: ChildSetupInput): Promise<Actio
       parent_id: user.id,
       nickname: input.nickname,
       grade: input.grade,
+      grade_year: schoolYear(),
       character_id: input.characterId,
     });
     if (error) throw error;

@@ -54,7 +54,7 @@ export interface DailyMission {
 export interface PlayerProfile {
   id: string;
   nickname: string;
-  grade: 2 | 3 | 4 | 5 | 6; // 초등학교 학년
+  grade: 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = 유아, 1~6 = 초등학교 학년 (지금 날짜 기준으로 계산된 값)
   characterId: InsectId;
   totalXp: number; // 누적 경험치 (평생, 표시용)
   characterXp: number; // 지금 키우는 친구의 경험치 (성충 3,600에서 멈춤)

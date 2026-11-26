@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { createChildAction, type SetupState } from "@/app/setup/actions";
 import { buttonClassName } from "@/components/ui/Button";
 import { InsectGlyph } from "@/components/ui/InsectGlyph";
+import { GRADE_LABEL } from "@/lib/game/grade";
 import { INSECTS } from "@/lib/game/insects";
 
 const INITIAL_STATE: SetupState = { error: null };
@@ -25,9 +26,9 @@ export function ChildSetupForm() {
       <label className="flex flex-col gap-2 text-base font-bold text-ink">
         학년
         <select name="grade" defaultValue="2" className={INPUT_CLASS}>
-          {[2, 3, 4, 5, 6].map((grade) => (
+          {[0, 1, 2, 3, 4, 5, 6].map((grade) => (
             <option key={grade} value={grade}>
-              {grade}학년
+              {GRADE_LABEL[grade]}
             </option>
           ))}
         </select>

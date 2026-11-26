@@ -8,6 +8,7 @@ import { getLevelInfo } from "@/lib/game/level";
 import { DAILY_GOAL_MINUTES, todayInSeoul } from "@/lib/game/mission-config";
 import { OPERATORS, type BandChoice, type Progress } from "@/lib/game/learning-levels";
 import { getCurrentChild, supabaseGetMissionView } from "@/lib/data/supabase-mission-repository";
+import { currentGrade } from "@/lib/game/grade";
 import type { ChildStats, HomeData, PlayerProfile } from "@/types/game";
 import type { InsectId } from "@/lib/game/insects";
 
@@ -59,7 +60,7 @@ export async function getSupabaseHomeData(): Promise<HomeData> {
   const { data: childDetail, error: childError } = await supabase
     .from("children")
     .select(
-      "id, nickname, grade, character_id, total_xp, char_xp, pending_new_character, coins, streak_days, study_progress, practice_mode, practice_bands, next_grade_approved",
+      "id, nickname, grade, grade_year, character_id, total_xp, char_xp, pending_new_character, coins, streak_days, study_progress, practice_mode, practice_bands, next_grade_approved",
     )
     .eq("id", child.id)
     .single();
@@ -90,7 +91,8 @@ export async function getSupabaseHomeData(): Promise<HomeData> {
   const profile: PlayerProfile = {
     id: childDetail.id,
     nickname: childDetail.nickname,
-    grade: childDetail.grade as PlayerProfile["grade"],
+    // 지금 날짜 기준으로 학년을 계산합니다 (3월이 되면 자동으로 한 학년 올라갑니다).
+    grade: currentGrade(childDetail.grade, childDetail.grade_year) as PlayerProfile["grade"],
     characterId: childDetail.character_id as PlayerProfile["characterId"],
     totalXp: childDetail.total_xp,
     characterXp: childDetail.char_xp,

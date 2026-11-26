@@ -9,7 +9,7 @@ import { supabaseCreateChild, supabaseHasChild } from "./supabase-child-reposito
 
 export interface ChildSetupInput {
   nickname: string;
-  grade: 2 | 3 | 4 | 5 | 6;
+  grade: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   characterId: InsectId;
 }
 
