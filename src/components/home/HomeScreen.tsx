@@ -114,9 +114,12 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
         </section>
         )}
 
-        <section aria-label="기록">
-          <StatsCard math={data.stats} english={english.stats} wrongMath={wrong.math} wrongEnglish={wrong.english} />
-        </section>
+        {/* 학습 기록(코칭)은 2학년부터 보여 줍니다. 유아·1학년은 숨깁니다. */}
+        {profile.grade > 1 && (
+          <section aria-label="기록">
+            <StatsCard math={data.stats} english={english.stats} wrongMath={wrong.math} wrongEnglish={wrong.english} />
+          </section>
+        )}
       </main>
     </div>
   );

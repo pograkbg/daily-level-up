@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useRef, useState, useTransition, useEffect } from "react";
+import { getPronunciationAction } from "@/app/english/actions";
 import { recordEarlyAction } from "@/app/early/actions";
+import { PronounceButton } from "@/components/english/PronounceButton";
 import type { EarlyItem, EarlySubject } from "@/lib/data/early-repository";
 import { playCorrectChime, playWrongTone } from "@/lib/sound";
 
@@ -10,6 +12,8 @@ interface EarlyQuizProps {
   title: string;
   subject: EarlySubject;
   items: EarlyItem[];
+  /** 0 = 유아, 1 = 1학년. 1학년 영어에만 발음 기호를 보여 줍니다. */
+  grade: 0 | 1;
 }
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -23,13 +27,14 @@ function clockMs(): number {
  * 유아·1학년 문제 풀이 화면. 한 문제에 보기 4개 중 하나를 고릅니다.
  * 정답 소리는 기존과 같고, 기록은 아이 정보로 저장됩니다.
  */
-export function EarlyQuiz({ title, subject, items }: EarlyQuizProps) {
+export function EarlyQuiz({ title, subject, items, grade }: EarlyQuizProps) {
   const [index, setIndex] = useState(0);
   const [chosen, setChosen] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const startedAt = useRef(0);
+  const [ipaState, setIpaState] = useState<{ word: string; ipa: string } | null>(null);
 
   useEffect(() => {
     startedAt.current = clockMs();
@@ -37,6 +42,26 @@ export function EarlyQuiz({ title, subject, items }: EarlyQuizProps) {
 
   const total = items.length;
   const current = items[index];
+
+  // 영어 단어(글자로 된 문제)에만 듣기 버튼을 붙입니다.
+  const englishWord =
+    subject === "english" && current && /^[A-Za-z]+$/.test(current.prompt) ? current.prompt : null;
+
+  // 1학년 영어만 발음 기호를 가져옵니다. 유아는 기호 없이 듣기 버튼만 보입니다.
+  useEffect(() => {
+    if (!englishWord || grade !== 1) return;
+    let cancelled = false;
+    getPronunciationAction(englishWord).then((result) => {
+      if (!cancelled && result.ok && result.data.ipa) {
+        setIpaState({ word: englishWord, ipa: result.data.ipa });
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [englishWord, grade]);
+
+  const ipaText = englishWord && ipaState?.word === englishWord ? ipaState.ipa : null;
 
   if (total === 0) {
     return (
@@ -131,6 +156,8 @@ export function EarlyQuiz({ title, subject, items }: EarlyQuizProps) {
           {isMath ? "알맞은 답을 골라요" : "알맞은 뜻이나 글자를 골라요"}
         </p>
         <p className={`break-words ${promptClass} text-ink`}>{current.prompt}</p>
+        {ipaText && <p className="text-xl font-bold text-ink-soft">/{ipaText.replace(/^\/|\/$/g, "")}/</p>}
+        {englishWord && <PronounceButton word={englishWord} />}
 
         <div className="grid w-full grid-cols-2 gap-3 sm:gap-4">
           {current.choices.map((choice, i) => {

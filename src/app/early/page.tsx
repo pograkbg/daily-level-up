@@ -70,7 +70,7 @@ export default async function EarlyPage({ searchParams }: { searchParams: Promis
   const items = await loadEarlySet(g, subject);
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
-      <EarlyQuiz title={`${gradeTitle} ${SUBJECT_TITLE[subject]}`} subject={subject} items={items} />
+      <EarlyQuiz title={`${gradeTitle} ${SUBJECT_TITLE[subject]}`} subject={subject} items={items} grade={g} />
     </div>
   );
 }
