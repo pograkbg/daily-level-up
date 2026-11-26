@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
+import { DEFAULT_VOLUME, getBgmVolume, useBgmVolume } from "@/lib/audio-settings";
 
 const MUTE_KEY = "dlu-bgm-muted";
-const TARGET_VOLUME = 0.02; // 잔잔한 배경음 (0~1)
+const TARGET_VOLUME = 0.02; // 잔잔한 배경음 기본값 (0~1). 설정 50일 때 이 크기입니다.
+
+/** 설정값(0~100)을 실제 음량(0~1)으로 바꿉니다. 기본값 50이면 TARGET_VOLUME과 같습니다. */
+function levelFor(setting: number): number {
+  return TARGET_VOLUME * (setting / DEFAULT_VOLUME);
+}
 const FADE_IN_MS = 3000; // 시작할 때 서서히 켜지는 시간
 const listeners = new Set<() => void>();
 
@@ -33,6 +39,7 @@ function writeMuted(value: boolean) {
 export function BgmPlayer({ src }: { src: string | null }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const muted = useSyncExternalStore(subscribe, readMuted, () => false);
+  const bgmVolume = useBgmVolume();
 
   useEffect(() => {
     if (!src) return;
@@ -41,11 +48,11 @@ export function BgmPlayer({ src }: { src: string | null }) {
     audio.volume = 0;
     audioRef.current = audio;
 
-    // 서서히 켜지기 (페이드인)
+    // 서서히 켜지기 (페이드인). 음량 설정은 매번 읽어서 바로 반영합니다.
     const startedAt = Date.now();
     const fade = window.setInterval(() => {
       const t = Math.min(1, (Date.now() - startedAt) / FADE_IN_MS);
-      audio.volume = TARGET_VOLUME * t;
+      audio.volume = levelFor(getBgmVolume()) * t;
       if (t >= 1) window.clearInterval(fade);
     }, 100);
 
@@ -61,6 +68,12 @@ export function BgmPlayer({ src }: { src: string | null }) {
     // muted 변화는 아래 effect에서 처리합니다.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src]);
+
+  // 음량 슬라이더를 움직이면 지금 재생 중인 소리에도 바로 반영합니다.
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio && audio.volume > 0) audio.volume = levelFor(bgmVolume);
+  }, [bgmVolume]);
 
   useEffect(() => {
     const audio = audioRef.current;

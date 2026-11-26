@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { claimRewardAction, startNextAttemptAction, submitAnswerAction } from "@/app/mission/actions";
 import { NumberPad } from "@/components/mission/NumberPad";
 import { BgmPlayer } from "@/components/mission/BgmPlayer";
+import { VolumeControl } from "@/components/mission/VolumeControl";
 import { buttonClassName } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -126,6 +127,8 @@ export function MissionScreen({ initialView, bgmSrc }: MissionScreenProps) {
             </span>
           </div>
         </nav>
+
+        <VolumeControl />
 
         <Card className="flex flex-col gap-3">
           <div className="flex justify-between text-sm font-bold text-ink">
