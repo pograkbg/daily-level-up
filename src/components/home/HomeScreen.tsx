@@ -34,7 +34,7 @@ function EarlyPlayCard({
       <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/25 text-4xl" aria-hidden>
         {emoji}
       </span>
-      <span className="flex min-w-0 flex-col gap-1">
+      <span className="flex min-w-0 flex-wrap items-baseline gap-x-2">
         <span className="text-xl font-extrabold sm:text-2xl">{title} ›</span>
         <span className="truncate text-sm font-bold opacity-80 sm:text-base">{detail}</span>
       </span>
