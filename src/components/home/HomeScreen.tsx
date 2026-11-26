@@ -29,13 +29,15 @@ function EarlyPlayCard({
   return (
     <Link
       href={`/early?subject=${subject}`}
-      className={`flex min-h-32 flex-col items-center justify-center gap-2 rounded-[2rem] px-6 py-6 text-center shadow-md transition active:translate-y-1 ${tone}`}
+      className={`flex min-h-28 items-center gap-4 rounded-[2rem] px-5 py-4 text-left shadow-md transition active:translate-y-1 ${tone}`}
     >
-      <span className="text-5xl" aria-hidden>
+      <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/25 text-4xl" aria-hidden>
         {emoji}
       </span>
-      <span className="text-2xl font-extrabold">{title} ›</span>
-      <span className="text-base font-bold opacity-80">{detail}</span>
+      <span className="flex min-w-0 flex-col gap-1">
+        <span className="text-xl font-extrabold sm:text-2xl">{title} ›</span>
+        <span className="truncate text-sm font-bold opacity-80 sm:text-base">{detail}</span>
+      </span>
     </Link>
   );
 }
@@ -85,7 +87,7 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
         <CharacterBand profile={profile} character={data.character} />
 
         {profile.grade <= 1 && (
-          <section className="grid grid-cols-1 gap-6 md:grid-cols-2" aria-label="오늘의 놀이">
+          <section className="grid grid-cols-2 gap-4 sm:gap-6" aria-label="오늘의 놀이">
             <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
             <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
           </section>
