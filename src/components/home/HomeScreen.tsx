@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CharacterBand } from "@/components/home/CharacterBand";
 import type { WrongEnglishItem, WrongMathItem } from "@/lib/data/wrong-answers-repository";
 import { EnglishPlayCard } from "@/components/home/EnglishPlayCard";
@@ -38,6 +39,15 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
 
       <main className="relative mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pb-8 pt-6 sm:gap-5 sm:px-6 sm:pt-8 [@media(max-height:860px)]:gap-2 [@media(max-height:860px)]:pb-3 [@media(max-height:860px)]:pt-3">
         <HomeHeader profile={profile} isAdmin={isAdmin} loginEmail={loginEmail ?? null} />
+
+        {profile.grade <= 1 && (
+          <Link
+            href="/early"
+            className="flex min-h-20 items-center justify-center rounded-3xl bg-primary text-2xl font-extrabold text-white shadow-md transition active:translate-y-1"
+          >
+            🧸 오늘의 놀이 시작하기 ›
+          </Link>
+        )}
 
         {gradeCleared && <GradeApproval approved={profile.nextGradeApproved} gradeName={`${profile.grade}학년`} />}
 
