@@ -68,13 +68,6 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
       <main className="relative mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 pb-8 pt-6 sm:gap-5 sm:px-6 sm:pt-8 [@media(max-height:860px)]:gap-2 [@media(max-height:860px)]:pb-3 [@media(max-height:860px)]:pt-3">
         <HomeHeader profile={profile} isAdmin={isAdmin} loginEmail={loginEmail ?? null} />
 
-        {profile.grade <= 1 && (
-          <section className="grid grid-cols-1 gap-6 md:grid-cols-2" aria-label="오늘의 놀이">
-            <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
-            <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
-          </section>
-        )}
-
         {gradeCleared && <GradeApproval approved={profile.nextGradeApproved} gradeName={`${profile.grade}학년`} />}
 
         {profile.pendingNewCharacter && <NewFriendPicker collection={profile.collection} />}
@@ -90,6 +83,13 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
         />
 
         <CharacterBand profile={profile} character={data.character} />
+
+        {profile.grade <= 1 && (
+          <section className="grid grid-cols-1 gap-6 md:grid-cols-2" aria-label="오늘의 놀이">
+            <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
+            <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
+          </section>
+        )}
 
         {profile.grade > 1 && (
         <section className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
