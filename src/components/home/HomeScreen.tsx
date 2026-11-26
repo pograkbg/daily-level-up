@@ -12,6 +12,34 @@ import { LevelUpPrompt } from "@/components/home/LevelUpPrompt";
 import type { HomeData } from "@/types/game";
 import type { EnglishLevelSummary, EnglishStats } from "@/types/english";
 
+/** 유아·1학년 놀이 카드 (수학 / 영어). 누르면 /early 의 해당 과목 놀이로 갑니다. */
+function EarlyPlayCard({
+  subject,
+  emoji,
+  title,
+  detail,
+  tone,
+}: {
+  subject: "math" | "english";
+  emoji: string;
+  title: string;
+  detail: string;
+  tone: string;
+}) {
+  return (
+    <Link
+      href={`/early?subject=${subject}`}
+      className={`flex min-h-32 flex-col items-center justify-center gap-2 rounded-[2rem] px-6 py-6 text-center shadow-md transition active:translate-y-1 ${tone}`}
+    >
+      <span className="text-5xl" aria-hidden>
+        {emoji}
+      </span>
+      <span className="text-2xl font-extrabold">{title} ›</span>
+      <span className="text-base font-bold opacity-80">{detail}</span>
+    </Link>
+  );
+}
+
 interface HomeScreenProps {
   data: HomeData;
   isAdmin: boolean;
@@ -41,12 +69,10 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
         <HomeHeader profile={profile} isAdmin={isAdmin} loginEmail={loginEmail ?? null} />
 
         {profile.grade <= 1 && (
-          <Link
-            href="/early"
-            className="flex min-h-20 items-center justify-center rounded-3xl bg-primary text-2xl font-extrabold text-white shadow-md transition active:translate-y-1"
-          >
-            🧸 오늘의 놀이 시작하기 ›
-          </Link>
+          <section className="grid grid-cols-1 gap-6 md:grid-cols-2" aria-label="오늘의 놀이">
+            <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
+            <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
+          </section>
         )}
 
         {gradeCleared && <GradeApproval approved={profile.nextGradeApproved} gradeName={`${profile.grade}학년`} />}
@@ -65,6 +91,7 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
 
         <CharacterBand profile={profile} character={data.character} />
 
+        {profile.grade > 1 && (
         <section className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
           <MissionHero
             mission={data.todayMission}
@@ -83,6 +110,7 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
             dailyGoalMinutes={data.dailyGoalMinutes}
           />
         </section>
+        )}
 
         <section aria-label="기록">
           <StatsCard math={data.stats} english={english.stats} wrongMath={wrong.math} wrongEnglish={wrong.english} />
