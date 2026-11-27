@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { SemesterCard } from "@/components/home/SemesterCard";
+import type { SemesterProgress } from "@/lib/data/semester-repository";
 import { CharacterBand } from "@/components/home/CharacterBand";
 import type { WrongEnglishItem, WrongMathItem } from "@/lib/data/wrong-answers-repository";
 import { EnglishPlayCard } from "@/components/home/EnglishPlayCard";
@@ -44,6 +46,7 @@ function EarlyPlayCard({
 
 interface HomeScreenProps {
   data: HomeData;
+  semester: SemesterProgress;
   isAdmin: boolean;
   wrong: { math: WrongMathItem[]; english: WrongEnglishItem[] };
   loginEmail?: string | null;
@@ -56,7 +59,7 @@ interface HomeScreenProps {
  * 2) 가운데: 플레이 두 개를 같은 크기로 나란히 (수학 | 영어)
  * 3) 아래: 내 친구 · 학습 기록 · 연산별 현황 (보기 전용)
  */
-export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeScreenProps) {
+export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester }: HomeScreenProps) {
   const { profile } = data;
   const gradeCleared = isGradeCleared(profile.progress);
   // 오늘 학습 시간 = 수학 풀이 시간 + 영어 풀이 시간 (실제로 잰 값)
@@ -92,6 +95,8 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong }: HomeSc
             <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
           </section>
         )}
+
+        {profile.grade > 1 && <SemesterCard grade={profile.grade} progress={semester} />}
 
         {profile.grade > 1 && (
         <section className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
