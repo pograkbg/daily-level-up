@@ -17,6 +17,10 @@ interface EnglishPlayCardProps {
   footer?: React.ReactNode;
   /** 레벨 선택 버튼 표시 여부 (학년 체계에서는 끕니다) */
   showLevelPicker?: boolean;
+  /** 학년 (학년 체계에서는 레벨 대신 학년 문구를 씁니다) */
+  grade?: number;
+  /** 하루 학습 목표 막대 표시 여부 (학년 체계에서는 끕니다) */
+  showGoal?: boolean;
 }
 
 /** 영어 플레이 카드 (대시보드 오른쪽 칸). 수학 카드와 같은 높이 구조로 줄였습니다. */
@@ -28,6 +32,8 @@ export function EnglishPlayCard({
   dailyGoalMinutes,
   footer,
   showLevelPicker = true,
+  grade,
+  showGoal = true,
 }: EnglishPlayCardProps) {
   const goalPercent = getDailyGoalPercent(studiedMinutes, dailyGoalMinutes);
   const open = summary.filter((s) => s.unlocked);
@@ -46,7 +52,7 @@ export function EnglishPlayCard({
         </div>
         <h2 className="text-2xl font-extrabold leading-snug text-ink">영어 미션</h2>
         <p className="text-sm font-bold text-ink-soft">
-          English Quest · {englishLevelName(current?.level ?? 1)} · 한 번에 20문제
+          {grade !== undefined ? `${grade}학년 영어 단어 · 한 번에 20문제` : `English Quest · ${englishLevelName(current?.level ?? 1)} · 한 번에 20문제`}
         </p>
       </div>
 
@@ -79,12 +85,14 @@ export function EnglishPlayCard({
         )}
       </div>
 
+      {showGoal && (
       <div className="flex items-center gap-3 rounded-2xl bg-mint/60 px-3 py-2">
         <span className="shrink-0 text-sm font-bold text-ink">
           학습 목표 {studiedMinutes}/{dailyGoalMinutes}분
         </span>
         <ProgressBar value={goalPercent} label={`하루 목표 진행률 ${goalPercent}%`} colorClass="bg-xp" heightClass="h-2.5" />
       </div>
+      )}
       {footer && <div className="flex flex-col gap-4 border-t-2 border-ink/10 pt-4">{footer}</div>}
     </Card>
   );

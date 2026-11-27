@@ -21,6 +21,10 @@ interface MissionHeroProps {
   footer?: React.ReactNode;
   /** 레벨 선택 버튼 표시 여부 (학년 체계에서는 끕니다) */
   showLevelPicker?: boolean;
+  /** 학년 (학년 체계에서는 레벨 대신 학년 문구를 씁니다) */
+  grade?: number;
+  /** 하루 학습 목표 막대 표시 여부 (학년 체계에서는 끕니다) */
+  showGoal?: boolean;
 }
 
 /**
@@ -37,6 +41,8 @@ export function MissionHero({
   studiedMinutes,
   footer,
   showLevelPicker = true,
+  grade,
+  showGoal = true,
 }: MissionHeroProps) {
   const missionPercent = getMissionProgressPercent(mission);
   const goalPercent = getDailyGoalPercent(studiedMinutes, dailyGoalMinutes);
@@ -51,8 +57,9 @@ export function MissionHero({
         </div>
         <h2 className="text-2xl font-extrabold leading-snug text-ink">{MISSION_TITLE}</h2>
         <p className="text-sm font-bold text-ink-soft">
-          숫자 모험 · {mission.attemptNo}회차 · {mission.planLabel ? `${mission.planLabel} · ` : ""}
-          {MISSION_STATUS_LABEL[mission.status]}
+          {grade !== undefined
+            ? `${grade}학년 수학 · ${mission.attemptNo}회차 · ${MISSION_STATUS_LABEL[mission.status]}`
+            : `숫자 모험 · ${mission.attemptNo}회차 · ${mission.planLabel ? `${mission.planLabel} · ` : ""}${MISSION_STATUS_LABEL[mission.status]}`}
         </p>
       </div>
 
@@ -76,10 +83,12 @@ export function MissionHero({
         {showLevelPicker && <PracticeDialog current={practice} progress={progress} />}
       </div>
 
+      {showGoal && (
       <div className="flex items-center gap-3 rounded-2xl bg-mint/60 px-3 py-2">
         <span className="shrink-0 text-sm font-bold text-ink">학습 목표 {studiedMinutes}/{dailyGoalMinutes}분</span>
         <ProgressBar value={goalPercent} label={`하루 목표 진행률 ${goalPercent}%`} colorClass="bg-xp" heightClass="h-2.5" />
       </div>
+      )}
       {footer && <div className="flex flex-col gap-4 border-t-2 border-ink/10 pt-4">{footer}</div>}
     </Card>
   );

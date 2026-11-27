@@ -139,6 +139,8 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
                 dailyGoalMinutes={data.dailyGoalMinutes}
                 studiedMinutes={studiedMinutes}
                 showLevelPicker={false}
+                showGoal={false}
+                grade={profile.grade}
                 footer={
                   <>
                     <SemesterProgressBody grade={profile.grade} progress={semester} />
@@ -161,6 +163,8 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
                 studiedMinutes={studiedMinutes}
                 dailyGoalMinutes={data.dailyGoalMinutes}
                 showLevelPicker={false}
+                showGoal={false}
+                grade={profile.grade}
                 footer={
                   profile.grade === 2 ? (
                     <>
