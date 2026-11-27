@@ -17,13 +17,15 @@ interface MissionHeroProps {
   stats: ChildStats;
   dailyGoalMinutes: number;
   studiedMinutes: number;
+  /** 카드 맨 아래에 함께 보여 줄 내용 (학기 진도, 연습 버튼 등) */
+  footer?: React.ReactNode;
 }
 
 /**
  * 수학 플레이 카드 (대시보드 왼쪽 칸). 한 화면에 들어가도록 줄였습니다.
  * 위: 라벨·횟수 · 제목 · 한 줄 상태 · 진행 막대 · 아래: 시작과 풀이 방식 버튼 나란히 · 학습 목표
  */
-export function MissionHero({ mission, attempts, practice, progress, stats, dailyGoalMinutes, studiedMinutes }: MissionHeroProps) {
+export function MissionHero({ mission, attempts, practice, progress, stats, dailyGoalMinutes, studiedMinutes, footer }: MissionHeroProps) {
   const missionPercent = getMissionProgressPercent(mission);
   const goalPercent = getDailyGoalPercent(studiedMinutes, dailyGoalMinutes);
   const inProgress = mission.solvedCount > 0 && mission.status !== "rewarded";
@@ -66,6 +68,7 @@ export function MissionHero({ mission, attempts, practice, progress, stats, dail
         <span className="shrink-0 text-sm font-bold text-ink">학습 목표 {studiedMinutes}/{dailyGoalMinutes}분</span>
         <ProgressBar value={goalPercent} label={`하루 목표 진행률 ${goalPercent}%`} colorClass="bg-xp" heightClass="h-2.5" />
       </div>
+      {footer && <div className="flex flex-col gap-4 border-t-2 border-ink/10 pt-4">{footer}</div>}
     </Card>
   );
 }

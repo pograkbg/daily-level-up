@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { SemesterCard } from "@/components/home/SemesterCard";
+import { SemesterProgressBody } from "@/components/home/SemesterCard";
 import type { SemesterProgress } from "@/lib/data/semester-repository";
 import type { EnglishSemesterProgress } from "@/lib/data/english-semester-repository";
-import { EnglishProgressCard } from "@/components/home/EnglishProgressCard";
+import { EnglishProgressBody } from "@/components/home/EnglishProgressCard";
 import { CharacterBand } from "@/components/home/CharacterBand";
 import type { WrongEnglishItem, WrongMathItem } from "@/lib/data/wrong-answers-repository";
 import { EnglishPlayCard } from "@/components/home/EnglishPlayCard";
@@ -10,6 +10,7 @@ import { GradeApproval } from "@/components/home/GradeApproval";
 import { HomeHeader } from "@/components/home/HomeHeader";
 import { MissionHero } from "@/components/home/MissionHero";
 import { StatsCard } from "@/components/home/StatsCard";
+import { Card } from "@/components/ui/Card";
 import { NewFriendPicker } from "@/components/forest/NewFriendPicker";
 import { isGradeCleared, OPERATOR_NAMES } from "@/lib/game/learning-levels";
 import { LevelUpPrompt } from "@/components/home/LevelUpPrompt";
@@ -26,12 +27,12 @@ function HomeSection({ title, children }: { title: string; children: React.React
   );
 }
 
-/** 추가 연습 버튼 (단원 연습, 영어 단어 등). 모양을 모두 같게 맞춥니다. */
+/** 미션 카드 안의 연습 버튼 (단원 연습, 영어 단어 맞추기 등). 모양을 모두 같게 맞춥니다. */
 function ExtraPracticeLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="flex min-h-16 items-center justify-center rounded-3xl bg-white px-6 py-4 text-xl font-extrabold text-primary-dark shadow-md transition active:translate-y-1"
+      className="flex min-h-14 items-center justify-center rounded-2xl bg-white px-5 py-3 text-lg font-extrabold text-primary-dark shadow-sm transition active:translate-y-1"
     >
       {label} ›
     </Link>
@@ -81,14 +82,15 @@ interface HomeScreenProps {
 /**
  * 대시보드 홈
  * 1) 위: 요약 줄 (캐릭터 레벨, 누적 경험치, 보유 코인, 연속 학습, 숲·영어 이동)
- * 2) 가운데: 플레이 두 개를 같은 크기로 나란히 (수학 | 영어)
- * 3) 아래: 내 친구 · 학습 기록 · 연산별 현황 (보기 전용)
+ * 2) 가운데: 오늘의 미션 — 수학 박스 하나, 영어 박스 하나 (각 박스 안에 진도와 연습 버튼)
+ * 3) 아래: 학습 기록 (2학년 이상)
  */
 export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester, englishProgress }: HomeScreenProps) {
   const { profile } = data;
   const gradeCleared = isGradeCleared(profile.progress);
   // 오늘 학습 시간 = 수학 풀이 시간 + 영어 풀이 시간 (실제로 잰 값)
   const studiedMinutes = Math.round((data.stats.today.ms + english.stats.todayMs) / 60000);
+  const isEarly = profile.grade <= 1;
 
   return (
     <div className="relative flex min-h-dvh flex-col overflow-hidden">
@@ -114,44 +116,59 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
 
         <CharacterBand profile={profile} character={data.character} />
 
-
         <HomeSection title="오늘의 미션">
           <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
-            {/* 수학 박스: 미션 카드 아래에 학기 진도와 단원 연습 */}
-            <div className="flex flex-col gap-3">
-              {profile.grade <= 1 ? (
+            {/* 수학 박스: 미션 카드 안에 학기 진도와 단원 연습 */}
+            {isEarly ? (
+              <Card className="flex flex-col gap-4">
                 <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
-              ) : (
-                <MissionHero
-                  mission={data.todayMission}
-                  attempts={data.attempts}
-                  practice={profile.practice}
-                  progress={profile.progress}
-                  stats={data.stats}
-                  dailyGoalMinutes={data.dailyGoalMinutes}
-                  studiedMinutes={studiedMinutes}
-                />
-              )}
-              {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
-              {profile.grade >= 1 && <ExtraPracticeLink href="/practice" label="📘 오늘의 단원 연습" />}
-            </div>
+                {profile.grade === 1 && (
+                  <div className="flex flex-col gap-4 border-t-2 border-ink/10 pt-4">
+                    <SemesterProgressBody grade={profile.grade} progress={semester} />
+                    <ExtraPracticeLink href="/practice" label="📘 오늘의 단원 연습" />
+                  </div>
+                )}
+              </Card>
+            ) : (
+              <MissionHero
+                mission={data.todayMission}
+                attempts={data.attempts}
+                practice={profile.practice}
+                progress={profile.progress}
+                stats={data.stats}
+                dailyGoalMinutes={data.dailyGoalMinutes}
+                studiedMinutes={studiedMinutes}
+                footer={
+                  <>
+                    <SemesterProgressBody grade={profile.grade} progress={semester} />
+                    <ExtraPracticeLink href="/practice" label="📘 오늘의 단원 연습" />
+                  </>
+                }
+              />
+            )}
 
-            {/* 영어 박스: 미션 카드 아래에 영어 진도와 단어 맞추기 */}
-            <div className="flex flex-col gap-3">
-              {profile.grade <= 1 ? (
+            {/* 영어 박스: 미션 카드 안에 영어 진도와 단어 맞추기 */}
+            {isEarly ? (
+              <Card className="flex flex-col gap-4">
                 <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
-              ) : (
-                <EnglishPlayCard
-                  summary={english.summary}
-                  dailyUsed={english.dailyUsed}
-                  dailyMax={english.dailyMax}
-                  studiedMinutes={studiedMinutes}
-                  dailyGoalMinutes={data.dailyGoalMinutes}
-                />
-              )}
-              {profile.grade === 2 && <EnglishProgressCard progress={englishProgress} />}
-              {profile.grade === 2 && <ExtraPracticeLink href="/english2" label="🔤 영어 단어 맞추기" />}
-            </div>
+              </Card>
+            ) : (
+              <EnglishPlayCard
+                summary={english.summary}
+                dailyUsed={english.dailyUsed}
+                dailyMax={english.dailyMax}
+                studiedMinutes={studiedMinutes}
+                dailyGoalMinutes={data.dailyGoalMinutes}
+                footer={
+                  profile.grade === 2 ? (
+                    <>
+                      <EnglishProgressBody progress={englishProgress} />
+                      <ExtraPracticeLink href="/english2" label="🔤 영어 단어 맞추기" />
+                    </>
+                  ) : undefined
+                }
+              />
+            )}
           </div>
         </HomeSection>
 

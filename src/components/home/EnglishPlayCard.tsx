@@ -13,10 +13,12 @@ interface EnglishPlayCardProps {
   dailyMax: number;
   studiedMinutes: number; // 오늘 수학+영어 학습 시간 (분)
   dailyGoalMinutes: number;
+  /** 카드 맨 아래에 함께 보여 줄 내용 (영어 진도, 연습 버튼 등) */
+  footer?: React.ReactNode;
 }
 
 /** 영어 플레이 카드 (대시보드 오른쪽 칸). 수학 카드와 같은 높이 구조로 줄였습니다. */
-export function EnglishPlayCard({ summary, dailyUsed, dailyMax, studiedMinutes, dailyGoalMinutes }: EnglishPlayCardProps) {
+export function EnglishPlayCard({ summary, dailyUsed, dailyMax, studiedMinutes, dailyGoalMinutes, footer }: EnglishPlayCardProps) {
   const goalPercent = getDailyGoalPercent(studiedMinutes, dailyGoalMinutes);
   const open = summary.filter((s) => s.unlocked);
   const current = open[open.length - 1] ?? summary[0];
@@ -71,6 +73,7 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, studiedMinutes, 
         </span>
         <ProgressBar value={goalPercent} label={`하루 목표 진행률 ${goalPercent}%`} colorClass="bg-xp" heightClass="h-2.5" />
       </div>
+      {footer && <div className="flex flex-col gap-4 border-t-2 border-ink/10 pt-4">{footer}</div>}
     </Card>
   );
 }
