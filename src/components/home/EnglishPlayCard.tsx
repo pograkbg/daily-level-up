@@ -56,6 +56,7 @@ export function EnglishPlayCard({
         </p>
       </div>
 
+      {grade === undefined && (
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between text-sm font-bold text-ink">
           <span>열린 레벨 익힌 단어</span>
@@ -65,6 +66,7 @@ export function EnglishPlayCard({
         </div>
         <ProgressBar value={percent} label={`영어 진도 ${percent}%`} colorClass="bg-xp" heightClass="h-3" />
       </div>
+      )}
 
       <div className={showLevelPicker ? "grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-2" : "grid grid-cols-1 gap-2"}>
         {done ? (
