@@ -12,8 +12,8 @@ interface EarlyQuizProps {
   title: string;
   subject: EarlySubject;
   items: EarlyItem[];
-  /** 0 = 유아, 1 = 1학년. 1학년 영어에만 발음 기호를 보여 줍니다. */
-  grade: 0 | 1;
+  /** 학년 (0 = 유아). 1학년 영어에만 발음 기호를 보여 줍니다. */
+  grade: number;
 }
 
 const LETTERS = ["A", "B", "C", "D"];

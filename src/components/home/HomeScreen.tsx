@@ -98,6 +98,15 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
 
         {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
 
+        {profile.grade >= 1 && (
+          <Link
+            href="/practice"
+            className="flex min-h-16 items-center justify-center rounded-3xl bg-butter px-6 py-4 text-xl font-extrabold text-ink shadow-md transition active:translate-y-1"
+          >
+            📘 오늘의 단원 연습 ›
+          </Link>
+        )}
+
         {profile.grade > 1 && (
         <section className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
           <MissionHero
