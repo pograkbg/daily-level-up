@@ -58,7 +58,7 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
 
   const row3: RowProps = {
     no: 3,
-    title: "모의고사",
+    title: "레벨업 모의고사",
     meta: englishProgress.mockOpen ? "열림" : "잠김",
     percent: accuracy,
     barLabel: `정답률 ${accuracy}% (${Math.round(MOCK_MIN_ACCURACY * 100)}% 이상 열림)`,
@@ -66,11 +66,11 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
     note: englishProgress.mockOpen ? "모의고사를 볼 수 있어요" : "진도와 정답률이 채워지면 열려요",
     action: englishProgress.mockOpen ? (
       <Link href="/english2/mock" className={buttonClassName()}>
-        🎯 영어 모의고사
+        🎯 레벨업 모의고사
       </Link>
     ) : (
       <span className={`${buttonClassName({ variant: "secondary" })} pointer-events-none opacity-50`} aria-disabled="true">
-        🔒 영어 모의고사
+        🔒 레벨업 모의고사
       </span>
     ),
   };

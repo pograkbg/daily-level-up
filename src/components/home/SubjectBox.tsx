@@ -59,7 +59,7 @@ function Row({ no, title, meta, action }: RowProps) {
         <span className="truncate text-base font-extrabold text-ink">{title}</span>
         <span className="truncate text-sm font-bold text-ink-soft">{meta}</span>
       </div>
-      <div className="shrink-0">{action}</div>
+      <div className="shrink-0 whitespace-nowrap [&>*]:min-h-12 [&>*]:px-4 [&>*]:py-2 [&>*]:text-base">{action}</div>
     </div>
   );
 }

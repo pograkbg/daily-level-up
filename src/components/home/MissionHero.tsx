@@ -53,7 +53,7 @@ export function MissionHero({ mission, attempts, semester }: MissionHeroProps) {
 
   const row3: RowProps = {
     no: 3,
-    title: "모의고사",
+    title: "레벨업 모의고사",
     meta: semester.mockOpen ? "열림" : "잠김",
     percent: accuracy,
     barLabel: `정답률 ${accuracy}% (${Math.round(MOCK_MIN_ACCURACY * 100)}% 이상 열림)`,
@@ -61,7 +61,7 @@ export function MissionHero({ mission, attempts, semester }: MissionHeroProps) {
     note: semester.mockOpen ? "모의고사를 볼 수 있어요" : "진도와 정답률이 채워지면 열려요",
     action: (
       <span className={`${buttonClassName({ variant: "secondary" })} pointer-events-none opacity-50`} aria-disabled="true">
-        {semester.mockOpen ? "🎯 수학 모의고사 (준비 중)" : "🔒 수학 모의고사"}
+        {semester.mockOpen ? "🎯 레벨업 모의고사 (준비 중)" : "🔒 레벨업 모의고사"}
       </span>
     ),
   };
