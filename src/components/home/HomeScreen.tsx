@@ -2,7 +2,6 @@ import Link from "next/link";
 import { SemesterProgressBody } from "@/components/home/SemesterCard";
 import type { SemesterProgress } from "@/lib/data/semester-repository";
 import type { EnglishSemesterProgress } from "@/lib/data/english-semester-repository";
-import { EnglishProgressBody } from "@/components/home/EnglishProgressCard";
 import { CharacterBand } from "@/components/home/CharacterBand";
 import type { WrongEnglishItem, WrongMathItem } from "@/lib/data/wrong-answers-repository";
 import { EnglishPlayCard } from "@/components/home/EnglishPlayCard";
@@ -88,8 +87,6 @@ interface HomeScreenProps {
 export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester, englishProgress }: HomeScreenProps) {
   const { profile } = data;
   const gradeCleared = isGradeCleared(profile.progress);
-  // 오늘 학습 시간 = 수학 풀이 시간 + 영어 풀이 시간 (실제로 잰 값)
-  const studiedMinutes = Math.round((data.stats.today.ms + english.stats.todayMs) / 60000);
   const isEarly = profile.grade <= 1;
 
   return (
@@ -133,24 +130,12 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
               <MissionHero
                 mission={data.todayMission}
                 attempts={data.attempts}
-                practice={profile.practice}
-                progress={profile.progress}
-                stats={data.stats}
-                dailyGoalMinutes={data.dailyGoalMinutes}
-                studiedMinutes={studiedMinutes}
-                showLevelPicker={false}
-                showGoal={false}
                 grade={profile.grade}
-                footer={
-                  <>
-                    <SemesterProgressBody grade={profile.grade} progress={semester} />
-                    <ExtraPracticeLink href="/practice" label="📘 오늘의 단원 연습" />
-                  </>
-                }
+                semester={semester}
               />
             )}
 
-            {/* 영어 박스: 미션 카드 안에 영어 진도와 단어 맞추기 */}
+            {/* 영어 박스: 1 영어 퀴즈 · 2 단어 맞추기 · 3 모의고사 */}
             {isEarly ? (
               <Card className="flex flex-col gap-4">
                 <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
@@ -160,24 +145,8 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
                 summary={english.summary}
                 dailyUsed={english.dailyUsed}
                 dailyMax={english.dailyMax}
-                studiedMinutes={studiedMinutes}
-                dailyGoalMinutes={data.dailyGoalMinutes}
-                showLevelPicker={false}
-                showGoal={false}
                 grade={profile.grade}
-                footer={
-                  profile.grade === 2 ? (
-                    <>
-                      <EnglishProgressBody progress={englishProgress} />
-                      <ExtraPracticeLink href="/english2" label="🔤 영어 단어 맞추기" />
-                      {englishProgress.mockOpen ? (
-                        <Link href="/english2/mock" className="flex min-h-14 items-center justify-center rounded-2xl bg-primary px-5 py-3 text-lg font-extrabold text-white shadow-sm">🎯 영어 모의고사</Link>
-                      ) : (
-                        <span className="flex min-h-14 items-center justify-center rounded-2xl bg-ink/5 px-5 py-3 text-lg font-extrabold text-ink-soft">🔒 영어 모의고사 (진도가 채워지면 열려요)</span>
-                      )}
-                    </>
-                  ) : undefined
-                }
+                englishProgress={englishProgress}
               />
             )}
           </div>
