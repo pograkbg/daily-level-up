@@ -14,6 +14,28 @@ import { LevelUpPrompt } from "@/components/home/LevelUpPrompt";
 import type { HomeData } from "@/types/game";
 import type { EnglishLevelSummary, EnglishStats } from "@/types/english";
 
+/** 홈의 한 묶음: 작은 제목과 내용 */
+function HomeSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex flex-col gap-3" aria-label={title}>
+      <h2 className="px-1 text-base font-extrabold text-ink-soft">{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+/** 추가 연습 버튼 (단원 연습, 영어 단어 등). 모양을 모두 같게 맞춥니다. */
+function ExtraPracticeLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex min-h-16 items-center justify-center rounded-3xl bg-white px-6 py-4 text-xl font-extrabold text-primary-dark shadow-md transition active:translate-y-1"
+    >
+      {label} ›
+    </Link>
+  );
+}
+
 /** 유아·1학년 놀이 카드 (수학 / 영어). 누르면 /early 의 해당 과목 놀이로 갑니다. */
 function EarlyPlayCard({
   subject,
@@ -89,35 +111,17 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
 
         <CharacterBand profile={profile} character={data.character} />
 
-        {profile.grade <= 1 && (
-          <section className="grid grid-cols-2 gap-4 sm:gap-6" aria-label="오늘의 놀이">
-            <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
-            <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
-          </section>
-        )}
-
         {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
 
-        {profile.grade === 2 && (
-          <Link
-            href="/english2"
-            className="flex min-h-16 items-center justify-center rounded-3xl bg-primary px-6 py-4 text-xl font-extrabold text-white shadow-md transition active:translate-y-1"
-          >
-            🔤 2학년 영어 단어 ›
-          </Link>
-        )}
-
-        {profile.grade >= 1 && (
-          <Link
-            href="/practice"
-            className="flex min-h-16 items-center justify-center rounded-3xl bg-butter px-6 py-4 text-xl font-extrabold text-ink shadow-md transition active:translate-y-1"
-          >
-            📘 오늘의 단원 연습 ›
-          </Link>
-        )}
-
-        {profile.grade > 1 && (
-        <section className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
+        <HomeSection title="오늘의 미션">
+          {profile.grade <= 1 && (
+            <div className="grid grid-cols-2 gap-4 sm:gap-6">
+              <EarlyPlayCard subject="math" emoji="🔢" title="수학 놀이" detail={profile.grade === 0 ? "숫자 세기" : "덧셈·뺄셈과 다음 수 찾기"} tone="bg-primary text-white" />
+              <EarlyPlayCard subject="english" emoji="🔤" title="영어 놀이" detail={profile.grade === 0 ? "알파벳 맞추기·영어 숫자" : "색과 동물 단어"} tone="bg-butter text-ink" />
+            </div>
+          )}
+          {profile.grade > 1 && (
+        <section className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
           <MissionHero
             mission={data.todayMission}
             attempts={data.attempts}
@@ -135,7 +139,15 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
             dailyGoalMinutes={data.dailyGoalMinutes}
           />
         </section>
-        )}
+          )}
+        </HomeSection>
+
+        <HomeSection title="추가 연습">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+            {profile.grade === 2 && <ExtraPracticeLink href="/english2" label="🔤 2학년 영어 단어" />}
+            {profile.grade >= 1 && <ExtraPracticeLink href="/practice" label="📘 오늘의 단원 연습" />}
+          </div>
+        </HomeSection>
 
         {/* 학습 기록(코칭)은 2학년부터 보여 줍니다. 유아·1학년은 숨깁니다. */}
         {profile.grade > 1 && (
