@@ -114,7 +114,6 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
 
         <CharacterBand profile={profile} character={data.character} />
 
-        {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
 
         <HomeSection title="오늘의 미션">
           <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">

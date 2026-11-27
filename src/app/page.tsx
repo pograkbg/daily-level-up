@@ -5,8 +5,8 @@ import { getHomeData } from "@/lib/data/home-repository";
 import { getEnglishDailyStatus, getEnglishStats, getEnglishSummary } from "@/lib/data/english-repository";
 import { currentLoginEmail, isCurrentAdmin } from "@/lib/data/admin-repository";
 import { getWrongEnglish, getWrongMath } from "@/lib/data/wrong-answers-repository";
-import { getSemesterProgress } from "@/lib/data/semester-repository";
 import { getGrade2EnglishProgress } from "@/lib/data/english-semester-repository";
+import { getSemesterProgress } from "@/lib/data/semester-repository";
 
 // 미션 결과가 바로 반영되도록 요청마다 새로 그립니다.
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export default async function HomePage() {
   if (!(await hasChildProfile())) {
     redirect("/setup");
   }
-  const [data, summary, daily, englishStats, isAdmin, loginEmail, wrongMath, wrongEnglish, semester, englishProgress] = await Promise.all([
+  const [data, summary, daily, englishStats, isAdmin, loginEmail, wrongMath, wrongEnglish, englishProgress, semester] = await Promise.all([
     getHomeData(),
     getEnglishSummary(),
     getEnglishDailyStatus(),
@@ -25,8 +25,8 @@ export default async function HomePage() {
     currentLoginEmail(),
     getWrongMath(30),
     getWrongEnglish(30),
-    getSemesterProgress(),
     getGrade2EnglishProgress(),
+    getSemesterProgress(),
   ]);
   return (
     <HomeScreen
