@@ -96,7 +96,7 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
           </section>
         )}
 
-        {profile.grade > 1 && <SemesterCard grade={profile.grade} progress={semester} />}
+        {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
 
         {profile.grade > 1 && (
         <section className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-2" aria-label="플레이">
