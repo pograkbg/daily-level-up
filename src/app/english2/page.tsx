@@ -4,6 +4,7 @@ import { EarlyQuiz } from "@/components/early/EarlyQuiz";
 import { loadGrade2English } from "@/lib/data/grade2-english-repository";
 import { hasChildProfile } from "@/lib/data/child-repository";
 import { getHomeData } from "@/lib/data/home-repository";
+import { getGrade2EnglishProgress } from "@/lib/data/english-semester-repository";
 import { semesterAt } from "@/lib/game/semester";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +21,8 @@ export default async function Grade2EnglishPage() {
 
   const semester = semesterAt().semester;
   const items = await loadGrade2English(semester);
+  const progress = await getGrade2EnglishProgress();
+  const percent = progress.target > 0 ? Math.min(100, Math.round((progress.correct / progress.target) * 100)) : 0;
 
   if (items.length === 0) {
     return (
@@ -34,6 +37,18 @@ export default async function Grade2EnglishPage() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="flex flex-col gap-2 rounded-2xl bg-white/80 px-5 py-4 shadow-sm">
+        <div className="flex justify-between text-sm font-bold text-ink">
+          <span>이번 학기 정답</span>
+          <span>
+            {progress.correct} / {progress.target}
+          </span>
+        </div>
+        <div className="h-3 w-full overflow-hidden rounded-full bg-ink/10" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${percent}%` }} />
+        </div>
+        <p className="text-xs font-bold text-ink-soft">단어 {progress.words}개 × 5번 정답이 목표예요.</p>
+      </div>
       <EarlyQuiz title={`2학년 ${semester}학기 영어 단어`} subject="english" items={items} grade={2} />
     </div>
   );
