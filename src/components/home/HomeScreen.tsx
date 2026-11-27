@@ -109,9 +109,10 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
             }))}
         />
 
-        <CharacterBand profile={profile} character={data.character} />
-
-        {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
+        <div className={profile.grade >= 1 ? "grid gap-4 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:items-stretch" : "grid gap-4"}>
+          <CharacterBand profile={profile} character={data.character} />
+          {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
+        </div>
 
         <HomeSection title="오늘의 미션">
           {profile.grade <= 1 && (
