@@ -13,7 +13,7 @@ export const OPERATORS: MathOperator[] = ["+", "-", "×", "÷"];
 export const OP_LEVEL_MAX = 15; // 연산 하나의 레벨 수
 export const XP_PER_LEVEL = 250; // 레벨 하나를 채우는 경험치
 export const XP_PER_CORRECT = 5; // 정답 1개당 경험치
-export const SESSION_QUESTIONS = 24; // 사칙연산 각 6문제 (그중 1문제는 랜덤 연산)
+export const SESSION_QUESTIONS = 20; // 사칙연산 각 5문제 (그중 1문제는 랜덤 연산)
 export const PER_OP_QUESTIONS = SESSION_QUESTIONS / 4; // 6
 export const RANDOM_PER_OP = 1; // 연산마다 한 문제는 랜덤 문제
 export const BAND_NAMES = ["하", "중", "상"] as const;
@@ -87,10 +87,10 @@ function randomSlot(seed: number, i: number, progress: Progress): PlanSlot {
 }
 
 /**
- * 한 회차(24문제)의 계획
+ * 한 회차(20문제)의 계획
  * - 지정 풀기: 연산마다 6문제 (덧셈 → 뺄셈 → 곱셈 → 나눗셈 순).
  *   각 연산의 6문제 중 1문제는 랜덤(어느 연산이든) 문제로 바꿉니다.
- * - 랜덤 풀기: 24문제 각각 무작위 연산, 그 연산의 열린 레벨 중 하나
+ * - 랜덤 풀기: 20문제 각각 무작위 연산, 그 연산의 열린 레벨 중 하나
  * null 이면 열리지 않은 난이도가 섞여 있다는 뜻
  */
 export function planSession(

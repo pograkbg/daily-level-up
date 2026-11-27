@@ -11,18 +11,18 @@ import {
 } from "@/lib/game/learning-levels";
 
 describe("한 회차 문제 수", () => {
-  it("한 회차는 24문제입니다 (사칙연산 각 6문제)", () => {
-    expect(SESSION_QUESTIONS).toBe(24);
+  it("한 회차는 20문제입니다 (사칙연산 각 5문제)", () => {
+    expect(SESSION_QUESTIONS).toBe(20);
   });
 });
 
 describe("지정 풀기 계획 (planSession)", () => {
   const bands = { "+": 0, "-": 0, "×": 0, "÷": 0 } as const;
 
-  it("지정 풀기는 24문제를 만듭니다", () => {
+  it("지정 풀기는 20문제를 만듭니다", () => {
     const plan = planSession("choose", { ...bands }, DEFAULT_PROGRESS, 12345);
     expect(plan).not.toBeNull();
-    expect(plan?.length).toBe(24);
+    expect(plan?.length).toBe(20);
   });
 
   it("연산마다 최소 5문제는 그 연산으로 나옵니다 (나머지 1문제는 랜덤)", () => {
@@ -38,9 +38,9 @@ describe("지정 풀기 계획 (planSession)", () => {
     expect(plan).toBeNull();
   });
 
-  it("랜덤 풀기도 24문제입니다", () => {
+  it("랜덤 풀기도 20문제입니다", () => {
     const plan = planSession("random", { "+": null, "-": null, "×": null, "÷": null }, DEFAULT_PROGRESS, 7);
-    expect(plan?.length).toBe(24);
+    expect(plan?.length).toBe(20);
   });
 });
 

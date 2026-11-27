@@ -3,7 +3,7 @@
  */
 
 export const MISSION_TITLE = "수학 미션";
-export const MISSION_TOTAL_QUESTIONS = 24;
+export const MISSION_TOTAL_QUESTIONS = 20;
 export const MISSION_REWARD_XP = 50;
 export const MISSION_REWARD_COINS = 20;
 export const DAILY_GOAL_MINUTES = 30;

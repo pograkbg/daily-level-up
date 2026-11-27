@@ -70,7 +70,7 @@ export function MissionHero({
             <span>
               {mission.solvedCount} / {mission.totalQuestions}
             </span>
-            <OperationDialog progress={progress} stats={stats} />
+            {grade === undefined && <OperationDialog progress={progress} stats={stats} />}
           </span>
         </div>
         <ProgressBar value={missionPercent} label={`미션 진행률 ${missionPercent}%`} colorClass="bg-honey" heightClass="h-3" />
