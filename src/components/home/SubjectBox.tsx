@@ -64,7 +64,7 @@ function Step({ no, title, meta, percent, barLabel, barColor = "bg-honey", note,
         <span className="text-sm font-bold text-ink-soft">{meta}</span>
       </div>
       <ProgressBar value={percent} label={barLabel} colorClass={barColor} heightClass="h-3" />
-      {note ? <p className="text-xs font-bold text-ink-soft">{note}</p> : <span className="block h-4" aria-hidden />}
+      {note ? <p className="text-sm font-bold text-ink-soft">{note}</p> : <span className="block h-5" aria-hidden />}
       <div className="mt-auto">{action}</div>
     </div>
   );

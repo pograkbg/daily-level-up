@@ -14,6 +14,8 @@ interface EarlyQuizProps {
   items: EarlyItem[];
   /** 학년 (0 = 유아). 1학년 영어에만 발음 기호를 보여 줍니다. */
   grade: number;
+  /** 모의고사: 통과에 필요한 정답 수. 있으면 결과 화면에 통과 여부를 보여 줍니다. */
+  passScore?: number;
 }
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -27,7 +29,7 @@ function clockMs(): number {
  * 유아·1학년 문제 풀이 화면. 한 문제에 보기 4개 중 하나를 고릅니다.
  * 정답 소리는 기존과 같고, 기록은 아이 정보로 저장됩니다.
  */
-export function EarlyQuiz({ title, subject, items, grade }: EarlyQuizProps) {
+export function EarlyQuiz({ title, subject, items, grade, passScore }: EarlyQuizProps) {
   const [index, setIndex] = useState(0);
   const [chosen, setChosen] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -84,6 +86,13 @@ export function EarlyQuiz({ title, subject, items, grade }: EarlyQuizProps) {
         <p className="text-lg font-bold text-ink">
           {total}문제 중 <span className="text-primary">{score}</span>개 맞혔어요
         </p>
+        {passScore !== undefined && (
+          <p className={`rounded-2xl px-5 py-3 text-lg font-extrabold ${score >= passScore ? "bg-xp/40 text-ink" : "bg-ink/5 text-ink-soft"}`}>
+            {score >= passScore
+              ? "🎉 모의고사 통과! 다음 학기로 넘어갈 수 있어요."
+              : `아쉬워요. ${passScore}개 이상 맞히면 통과예요.`}
+          </p>
+        )}
         <div className="flex w-full flex-col gap-3 sm:flex-row">
           <Link href="/early" className="flex min-h-14 flex-1 items-center justify-center rounded-2xl bg-primary font-bold text-white">
             다른 놀이 하기

@@ -9,6 +9,7 @@ import { shuffle } from "@/lib/game/early";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const QUESTIONS = 20;
+export const MOCK_ENGLISH_QUESTIONS = 50;
 
 interface WordRow {
   word: string;
@@ -16,7 +17,7 @@ interface WordRow {
   category: string;
 }
 
-export async function loadGrade2English(semester: 1 | 2): Promise<EarlyItem[]> {
+export async function loadGrade2English(semester: 1 | 2, count: number = QUESTIONS): Promise<EarlyItem[]> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("grade2_words")
@@ -26,7 +27,7 @@ export async function loadGrade2English(semester: 1 | 2): Promise<EarlyItem[]> {
 
   const words = (data ?? []) as WordRow[];
   const random = () => Math.random();
-  const picked = shuffle(words, random).slice(0, QUESTIONS);
+  const picked = shuffle(words, random).slice(0, count);
 
   return picked.map((w) => {
     const others = words.filter((o) => o.word !== w.word && o.meaning_ko !== w.meaning_ko);

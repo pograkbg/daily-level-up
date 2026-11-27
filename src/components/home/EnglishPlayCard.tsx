@@ -35,11 +35,22 @@ export function EnglishPlayCard({ grade, englishProgress }: EnglishPlayCardProps
     percent,
     barLabel: `영어 정답 진도 ${percent}%`,
     barColor: "bg-primary",
-    note: `단어 ${englishProgress.words}개 × 5번 정답이 목표예요`,
+    note: `단어 ${englishProgress.words}개 × 5번 정답이 목표예요 · ${englishProgress.mockOpen ? "🎯 모의고사 열림" : "모의고사는 진도가 채워지면 열려요"}`,
     action: (
-      <Link href="/english2" className={buttonClassName({ variant: "secondary" })}>
-        🔤 영어 단어 맞추기
-      </Link>
+      <div className="grid grid-cols-2 gap-2">
+        <Link href="/english2" className={buttonClassName({ variant: "secondary" })}>
+          🔤 단어 맞추기
+        </Link>
+        {englishProgress.mockOpen ? (
+          <Link href="/english2/mock" className={buttonClassName()}>
+            🎯 모의고사
+          </Link>
+        ) : (
+          <span className={`${buttonClassName({ variant: "secondary" })} pointer-events-none opacity-50`} aria-disabled="true">
+            🔒 모의고사
+          </span>
+        )}
+      </div>
     ),
   };
 
