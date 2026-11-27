@@ -53,7 +53,7 @@ function Row({ no, title, meta, action }: RowProps) {
   return (
     <div className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm">
       <div className="flex min-w-0 items-center gap-2">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-white" aria-hidden>
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-base font-extrabold text-white" aria-hidden>
           {no}
         </span>
         <span className="truncate text-base font-extrabold text-ink">{title}</span>

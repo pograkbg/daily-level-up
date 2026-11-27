@@ -25,7 +25,7 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
   const row1: RowProps = {
     no: 1,
     title: "영어 퀴즈",
-    meta: `오늘 ${dailyUsed} / ${dailyMax}회`,
+    meta: "한 번에 20문제",
     percent: quizPercent,
     barLabel: `오늘 퀴즈 ${dailyUsed}회`,
     barColor: "bg-xp",
@@ -79,7 +79,7 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
     <SubjectBox
       badge="🔤 영어 플레이"
       title="영어 미션"
-      count={`${englishProgress.grade}학년 ${englishProgress.semester}학기`}
+      count={`오늘 ${dailyUsed} / ${dailyMax}회`}
       rows={[row1, row2, row3]}
     />
   );
