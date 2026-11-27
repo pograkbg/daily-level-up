@@ -15,7 +15,7 @@ interface MissionHeroProps {
 }
 
 /** 수학 박스 (2학년 이상): 1 미션 · 2 단원 연습 · 3 모의고사 */
-export function MissionHero({ mission, attempts, grade, semester }: MissionHeroProps) {
+export function MissionHero({ mission, attempts, semester }: MissionHeroProps) {
   const missionPercent = getMissionProgressPercent(mission);
   const inProgress = mission.solvedCount > 0 && mission.status !== "rewarded";
   const semesterPercent = semester.target > 0 ? Math.min(100, Math.round((semester.solved / semester.target) * 100)) : 0;
@@ -23,7 +23,7 @@ export function MissionHero({ mission, attempts, grade, semester }: MissionHeroP
 
   const row1: RowProps = {
     no: 1,
-    title: "미션",
+    title: "수학 퀴즈",
     meta: `${mission.solvedCount} / ${mission.totalQuestions}`,
     percent: missionPercent,
     barLabel: `미션 진행률 ${missionPercent}%`,
@@ -31,7 +31,7 @@ export function MissionHero({ mission, attempts, grade, semester }: MissionHeroP
     note: `${MISSION_STATUS_LABEL[mission.status]} · ${mission.attemptNo}회차`,
     action: (
       <Link href="/mission" className={buttonClassName()}>
-        {inProgress ? "▶ 이어서 풀기" : "⚔️ 수학 시작하기"}
+        {inProgress ? "▶ 수학 퀴즈 이어서 풀기" : "✏️ 수학 퀴즈 시작하기"}
       </Link>
     ),
   };
@@ -70,7 +70,6 @@ export function MissionHero({ mission, attempts, grade, semester }: MissionHeroP
     <SubjectBox
       badge="📐 수학 플레이"
       title={MISSION_TITLE}
-      caption={`${grade}학년 수학 · 한 번에 20문제`}
       count={`오늘 ${attempts.started} / ${attempts.max}회`}
       rows={[row1, row2, row3]}
     />

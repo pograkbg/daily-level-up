@@ -14,7 +14,7 @@ interface EnglishPlayCardProps {
 }
 
 /** 영어 박스 (2학년 이상): 1 영어 퀴즈 · 2 단어 맞추기 · 3 모의고사 */
-export function EnglishPlayCard({ summary, dailyUsed, dailyMax, grade, englishProgress }: EnglishPlayCardProps) {
+export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress }: EnglishPlayCardProps) {
   const open = summary.filter((s) => s.unlocked);
   const current = open[open.length - 1] ?? summary[0];
   const quizDone = dailyUsed >= dailyMax;
@@ -79,7 +79,6 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, grade, englishPr
     <SubjectBox
       badge="🔤 영어 플레이"
       title="영어 미션"
-      caption={`${grade}학년 영어 단어 · 한 번에 20문제`}
       count={`${englishProgress.grade}학년 ${englishProgress.semester}학기`}
       rows={[row1, row2, row3]}
     />
