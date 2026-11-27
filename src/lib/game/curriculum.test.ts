@@ -29,7 +29,57 @@ const PARAMS: Record<CurriculumKind, CurriculumParams> = {
   dec_sub: { dec: 2, a: [1, 99] },
   dec_mul: { dec: 1, a: [1, 99], b: [2, 9] },
   dec_div: { dec: 1, b: [2, 9], q: [10, 99] },
+  mixed: { a: [10, 49], b: [2, 9], c: [2, 9] },
+  pattern: { start: [1, 20], step: [2, 5], len: 4 },
+  average: { a: [20, 59] },
+  round: { a: [100, 999], unit: [10, 10] },
+  ratio: { a: [1, 19], b: [2, 19] },
+  proportion: { a: [2, 9], k: [2, 6], c: [2, 12] },
 };
+
+describe("새 문제 종류", () => {
+  it("규칙 찾기: 다음 수가 정답", () => {
+    for (let i = 0; i < 40; i += 1) {
+      const p = generateCurriculumProblem("pattern", { start: [1, 20], step: [2, 5], len: 4 }, seeded(i + 900));
+      const nums = p.prompt.replace(", ?", "").split(", ").map(Number);
+      const step = nums[1] - nums[0];
+      expect(Number(p.answer)).toBe(nums[nums.length - 1] + step);
+    }
+  });
+
+  it("평균: 정답은 세 수의 평균", () => {
+    for (let i = 0; i < 40; i += 1) {
+      const p = generateCurriculumProblem("average", { a: [20, 59] }, seeded(i + 950));
+      const nums = p.prompt.split("의 평균")[0].split(", ").map(Number);
+      expect((nums[0] + nums[1] + nums[2]) / 3).toBe(Number(p.answer));
+    }
+  });
+
+  it("어림하기: 답은 단위의 배수", () => {
+    for (let i = 0; i < 40; i += 1) {
+      const p = generateCurriculumProblem("round", { a: [100, 999], unit: [10, 10] }, seeded(i + 980));
+      expect(Number(p.answer) % 10).toBe(0);
+    }
+  });
+
+  it("비례식: a : ak = c : ? 의 답은 k×c", () => {
+    for (let i = 0; i < 40; i += 1) {
+      const p = generateCurriculumProblem("proportion", { a: [2, 9], k: [2, 6], c: [2, 12] }, seeded(i + 990));
+      const [left, right] = p.prompt.replace(" = ", "|").split("|");
+      const [a, b] = left.split(" : ").map(Number);
+      const [c] = right.replace(" : ?", "").split(" : ").map(Number);
+      expect(Number(p.answer)).toBe((b / a) * c);
+    }
+  });
+
+  it("혼합계산과 비율도 보기 4개를 만든다", () => {
+    for (const kind of ["mixed", "ratio"] as const) {
+      const p = generateCurriculumProblem(kind, PARAMS[kind], seeded(1234));
+      expect(p.choices).toHaveLength(4);
+      expect(p.choices).toContain(p.answer);
+    }
+  });
+});
 
 describe("정수 덧셈·뺄셈", () => {
   it("받아올림 없음 규칙이면 자리마다 합이 10 미만", () => {

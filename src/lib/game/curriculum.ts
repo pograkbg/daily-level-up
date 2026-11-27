@@ -10,7 +10,8 @@
 export type CurriculumKind =
   | "add" | "sub" | "mul" | "div"
   | "frac_add" | "frac_sub" | "frac_mul" | "frac_div"
-  | "dec_add" | "dec_sub" | "dec_mul" | "dec_div";
+  | "dec_add" | "dec_sub" | "dec_mul" | "dec_div"
+  | "mixed" | "pattern" | "average" | "round" | "ratio" | "proportion";
 
 export type Range = [number, number];
 
@@ -24,6 +25,12 @@ export interface CurriculumParams {
   int?: Range;
   same?: boolean;
   dec?: number;
+  c?: Range;
+  k?: Range;
+  start?: Range;
+  step?: Range;
+  len?: number;
+  unit?: Range;
 }
 
 export interface CurriculumProblem {
@@ -236,6 +243,102 @@ export function generateCurriculumProblem(kind: CurriculumKind, params: Curricul
         ]),
         choicesRand,
       ),
+    };
+  }
+
+  if (kind === "mixed") {
+    // 혼합계산: a + b × c 또는 a × b − c (답이 0 이상인 정수)
+    const a = randInt(params.a?.[0] ?? 2, params.a?.[1] ?? 9, rand);
+    const b = randInt(params.b?.[0] ?? 2, params.b?.[1] ?? 9, rand);
+    const e = randInt(params.c?.[0] ?? 1, params.c?.[1] ?? 9, rand);
+    const plusFirst = rand() < 0.5;
+    const value = plusFirst ? a + b * e : a * b - e;
+    if (value < 0) return generateCurriculumProblem(kind, params, rand);
+    const prompt = plusFirst ? `${a} + ${b} × ${e} = ?` : `${a} × ${b} − ${e} = ?`;
+    return {
+      prompt,
+      answer: `${value}`,
+      choices: shuffle(distractors(value, (k) => [value + k, value - k, value + 10 * k], (v) => `${v}`), choicesRand),
+    };
+  }
+
+  if (kind === "pattern") {
+    // 규칙 찾기: 같은 간격으로 늘어나는 수열의 다음 수
+    const start = randInt(params.start?.[0] ?? 1, params.start?.[1] ?? 9, rand);
+    const step = randInt(params.step?.[0] ?? 1, params.step?.[1] ?? 3, rand);
+    const len = params.len ?? 4;
+    const seq = Array.from({ length: len + 1 }, (_, i) => start + i * step);
+    const next = seq[len];
+    const shown = seq.slice(0, len).join(", ");
+    return {
+      prompt: `${shown}, ?`,
+      answer: `${next}`,
+      choices: shuffle(distractors(next, (k) => [next + k, next - k, next + step], (v) => `${v}`), choicesRand),
+    };
+  }
+
+  if (kind === "average") {
+    // 평균: 세 수의 합이 3으로 나누어떨어지게 만들어 정수 평균을 구합니다.
+    const range = params.a ?? [1, 9];
+    let x = 0;
+    let y = 0;
+    let z = 0;
+    for (let tries = 0; tries < 200; tries += 1) {
+      x = randInt(range[0], range[1], rand);
+      y = randInt(range[0], range[1], rand);
+      z = randInt(range[0], range[1], rand);
+      if ((x + y + z) % 3 === 0) break;
+    }
+    const value = (x + y + z) / 3;
+    return {
+      prompt: `${x}, ${y}, ${z}의 평균은?`,
+      answer: `${value}`,
+      choices: shuffle(distractors(value, (k) => [value + k, value - k], (v) => `${v}`), choicesRand),
+    };
+  }
+
+  if (kind === "round") {
+    // 어림하기: 주어진 자리(10, 100, 1000)에서 반올림
+    const a = randInt(params.a?.[0] ?? 10, params.a?.[1] ?? 99, rand);
+    const unit = params.unit?.[0] ?? 10;
+    const value = Math.round(a / unit) * unit;
+    return {
+      prompt: `${a}을(를) ${unit}의 자리까지 반올림하면?`,
+      answer: `${value}`,
+      choices: shuffle(distractors(value, (k) => [value + unit * k, value - unit * k], (v) => `${v}`), choicesRand),
+    };
+  }
+
+  if (kind === "ratio") {
+    // 비율: a 대 b 를 분수로 (약분한 답)
+    const a = randInt(params.a?.[0] ?? 1, params.a?.[1] ?? 9, rand);
+    const b = randInt(params.b?.[0] ?? 2, params.b?.[1] ?? 9, rand);
+    const result = reduce({ n: a, d: b });
+    return {
+      prompt: `${a} 대 ${b}의 비율을 분수로 나타내면?`,
+      answer: fracText(result),
+      choices: shuffle(
+        fractionDistractors(fracText(result), (k) => [
+          fracText(reduce({ n: result.n + k, d: result.d })),
+          fracText(reduce({ n: result.n, d: result.d + k })),
+          fracText(reduce({ n: result.n + 1, d: result.d + 1 })),
+        ]),
+        choicesRand,
+      ),
+    };
+  }
+
+  if (kind === "proportion") {
+    // 비례식: a : b = c : ?  (b 는 a 의 k 배이므로 답은 k × c)
+    const a = randInt(params.a?.[0] ?? 2, params.a?.[1] ?? 9, rand);
+    const k = randInt(params.k?.[0] ?? 2, params.k?.[1] ?? 6, rand);
+    const c = randInt(params.c?.[0] ?? 2, params.c?.[1] ?? 12, rand);
+    const b = a * k;
+    const value = k * c;
+    return {
+      prompt: `${a} : ${b} = ${c} : ?`,
+      answer: `${value}`,
+      choices: shuffle(distractors(value, (d) => [value + d, value - d, value + k], (v) => `${v}`), choicesRand),
     };
   }
 
