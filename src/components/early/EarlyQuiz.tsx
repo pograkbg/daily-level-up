@@ -45,7 +45,7 @@ export function EarlyQuiz({ title, subject, items, grade }: EarlyQuizProps) {
 
   // 영어 단어(글자로 된 문제)에만 듣기 버튼을 붙입니다.
   const englishWord =
-    subject === "english" && current && /^[A-Za-z]+$/.test(current.prompt) ? current.prompt : null;
+    subject === "english" && current && /^[A-Za-z][A-Za-z -]*$/.test(current.prompt) ? current.prompt : null;
 
   // 1학년 영어만 발음 기호를 가져옵니다. 유아는 기호 없이 듣기 버튼만 보입니다.
   useEffect(() => {

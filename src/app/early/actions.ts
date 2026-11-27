@@ -18,6 +18,7 @@ export interface EarlyAnswerInput {
 const KINDS = [
   "count_number", "alphabet_pick", "english_number", "color_animal", "add", "sub", "next",
   "mul", "div", "frac_add", "frac_sub", "frac_mul", "frac_div", "dec_add", "dec_sub", "dec_mul", "dec_div",
+  "grade2_word",
 ];
 
 export async function recordEarlyAction(data: EarlyAnswerInput): Promise<ActionResult<null>> {

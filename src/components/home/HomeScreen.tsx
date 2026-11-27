@@ -98,6 +98,15 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
 
         {profile.grade >= 1 && <SemesterCard grade={profile.grade} progress={semester} />}
 
+        {profile.grade === 2 && (
+          <Link
+            href="/english2"
+            className="flex min-h-16 items-center justify-center rounded-3xl bg-primary px-6 py-4 text-xl font-extrabold text-white shadow-md transition active:translate-y-1"
+          >
+            🔤 2학년 영어 단어 ›
+          </Link>
+        )}
+
         {profile.grade >= 1 && (
           <Link
             href="/practice"
