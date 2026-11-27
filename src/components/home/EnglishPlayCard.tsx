@@ -15,10 +15,20 @@ interface EnglishPlayCardProps {
   dailyGoalMinutes: number;
   /** 카드 맨 아래에 함께 보여 줄 내용 (영어 진도, 연습 버튼 등) */
   footer?: React.ReactNode;
+  /** 레벨 선택 버튼 표시 여부 (학년 체계에서는 끕니다) */
+  showLevelPicker?: boolean;
 }
 
 /** 영어 플레이 카드 (대시보드 오른쪽 칸). 수학 카드와 같은 높이 구조로 줄였습니다. */
-export function EnglishPlayCard({ summary, dailyUsed, dailyMax, studiedMinutes, dailyGoalMinutes, footer }: EnglishPlayCardProps) {
+export function EnglishPlayCard({
+  summary,
+  dailyUsed,
+  dailyMax,
+  studiedMinutes,
+  dailyGoalMinutes,
+  footer,
+  showLevelPicker = true,
+}: EnglishPlayCardProps) {
   const goalPercent = getDailyGoalPercent(studiedMinutes, dailyGoalMinutes);
   const open = summary.filter((s) => s.unlocked);
   const current = open[open.length - 1] ?? summary[0];
@@ -50,7 +60,7 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, studiedMinutes, 
         <ProgressBar value={percent} label={`영어 진도 ${percent}%`} colorClass="bg-xp" heightClass="h-3" />
       </div>
 
-      <div className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-2">
+      <div className={showLevelPicker ? "grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-2" : "grid grid-cols-1 gap-2"}>
         {done ? (
           <NoticeButton
             label="✏️ 영어 퀴즈 시작하기"
@@ -62,9 +72,11 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, studiedMinutes, 
             ✏️ 영어 퀴즈 시작하기
           </Link>
         )}
-        <Link href="/english" className={buttonClassName({ variant: "secondary" })}>
-          📚 레벨 선택
-        </Link>
+        {showLevelPicker && (
+          <Link href="/english" className={buttonClassName({ variant: "secondary" })}>
+            📚 레벨 선택
+          </Link>
+        )}
       </div>
 
       <div className="flex items-center gap-3 rounded-2xl bg-mint/60 px-3 py-2">
