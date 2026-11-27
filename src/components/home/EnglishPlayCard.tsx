@@ -31,11 +31,11 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
     barColor: "bg-xp",
     note: quizDone ? "오늘 퀴즈는 끝났어요. 내일 다시 만나요!" : "한 번에 20문제",
     action: quizDone ? (
-      <span className={`${buttonClassName()} pointer-events-none opacity-50`} aria-disabled="true">
+      <span className={`${buttonClassName({ size: "row" })} pointer-events-none opacity-50`} aria-disabled="true">
         ✏️ 영어 퀴즈 시작하기
       </span>
     ) : (
-      <Link href={`/english/quiz?level=${current?.level ?? 1}`} className={buttonClassName()}>
+      <Link href={`/english/quiz?level=${current?.level ?? 1}`} className={buttonClassName({ size: "row" })}>
         ✏️ 영어 퀴즈 시작하기
       </Link>
     ),
@@ -50,7 +50,7 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
     barColor: "bg-primary",
     note: `단어 ${englishProgress.words}개 × 5번 정답이 목표예요`,
     action: (
-      <Link href="/english2" className={buttonClassName({ variant: "secondary" })}>
+      <Link href="/english2" className={buttonClassName({ variant: "secondary", size: "row" })}>
         🔤 영어 단어 맞추기
       </Link>
     ),
@@ -65,11 +65,11 @@ export function EnglishPlayCard({ summary, dailyUsed, dailyMax, englishProgress 
     barColor: "bg-xp",
     note: englishProgress.mockOpen ? "모의고사를 볼 수 있어요" : "진도와 정답률이 채워지면 열려요",
     action: englishProgress.mockOpen ? (
-      <Link href="/english2/mock" className={buttonClassName()}>
+      <Link href="/english2/mock" className={buttonClassName({ size: "row" })}>
         🎯 레벨업 모의고사
       </Link>
     ) : (
-      <span className={`${buttonClassName({ variant: "secondary" })} pointer-events-none opacity-50`} aria-disabled="true">
+      <span className={`${buttonClassName({ variant: "secondary", size: "row" })} pointer-events-none opacity-50`} aria-disabled="true">
         🔒 레벨업 모의고사
       </span>
     ),

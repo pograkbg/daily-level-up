@@ -85,7 +85,7 @@ export default async function PracticePage({ searchParams }: { searchParams: Pro
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-5 px-4 py-6 sm:px-6 sm:py-8">
-      <EarlyQuiz title={`${unit.grade}학년 ${unit.semester}학기 · ${unit.unit}`} subject="math" items={items} grade={profile.grade} />
+      <EarlyQuiz title={`${unit.grade}학년 ${unit.semester}학기 · ${unit.unit}`} subject="math" items={items} grade={profile.grade} exitHref="/" />
     </div>
   );
 }

@@ -113,7 +113,7 @@ export function HomeScreen({ data, english, isAdmin, loginEmail, wrong, semester
 
         <CharacterBand profile={profile} character={data.character} />
 
-        <HomeSection title={profile.grade >= 1 ? `오늘의 미션 · ${profile.grade}학년 ${semester.semester}학기` : "오늘의 미션"}>
+        <HomeSection title={profile.grade >= 1 ? `${profile.grade}학년 ${semester.semester}학기` : "오늘의 미션"}>
           <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
             {/* 수학 박스: 미션 카드 안에 학기 진도와 단원 연습 */}
             {isEarly ? (

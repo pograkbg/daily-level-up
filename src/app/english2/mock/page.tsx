@@ -49,6 +49,7 @@ export default async function EnglishMockPage() {
         subject="english"
         items={items}
         grade={2}
+        exitHref="/"
         passScore={Math.ceil((items.length * MOCK_PASS_SCORE) / 100)}
       />
     </div>

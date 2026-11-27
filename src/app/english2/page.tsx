@@ -49,7 +49,7 @@ export default async function Grade2EnglishPage() {
         </div>
         <p className="text-xs font-bold text-ink-soft">단어 {progress.words}개 × 5번 정답이 목표예요.</p>
       </div>
-      <EarlyQuiz title={`2학년 ${semester}학기 영어 단어`} subject="english" items={items} grade={2} />
+      <EarlyQuiz title={`2학년 ${semester}학기 영어 단어`} subject="english" items={items} grade={2} exitHref="/" />
     </div>
   );
 }

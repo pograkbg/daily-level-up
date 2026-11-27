@@ -13,12 +13,20 @@ const VARIANT_CLASS: Record<ButtonVariant, string> = {
     "bg-butter text-ink shadow-[0_6px_0_0_#e8d88a] hover:brightness-105 active:translate-y-1 active:shadow-[0_2px_0_0_#e8d88a]",
 };
 
-/** 버튼 모양 클래스 (링크에도 같은 모양을 쓰고 싶을 때 사용) */
+/**
+ * 버튼 모양 클래스 (링크에도 같은 모양을 쓰고 싶을 때 사용)
+ * size "row": 과목 박스 안의 한 줄 버튼. 어떤 버튼이든 같은 크기로 보입니다.
+ */
 export function buttonClassName({
   variant = "primary",
+  size = "lg",
   className = "",
-}: { variant?: ButtonVariant; className?: string } = {}): string {
-  return `flex min-h-16 w-full items-center justify-center gap-3 rounded-3xl px-6 py-4 text-xl font-extrabold transition duration-100 disabled:opacity-50 sm:text-2xl ${VARIANT_CLASS[variant]} ${className}`;
+}: { variant?: ButtonVariant; size?: "lg" | "row"; className?: string } = {}): string {
+  const sizeClass =
+    size === "row"
+      ? "min-h-12 w-full rounded-2xl px-4 py-2 text-base font-extrabold"
+      : "min-h-16 w-full rounded-3xl px-6 py-4 text-xl font-extrabold sm:text-2xl";
+  return `flex items-center justify-center gap-2 whitespace-nowrap transition duration-100 disabled:opacity-50 ${sizeClass} ${VARIANT_CLASS[variant]} ${className}`;
 }
 
 /**

@@ -30,7 +30,7 @@ export function MissionHero({ mission, attempts, semester }: MissionHeroProps) {
     barColor: "bg-honey",
     note: `${MISSION_STATUS_LABEL[mission.status]} · ${mission.attemptNo}회차`,
     action: (
-      <Link href="/mission" className={buttonClassName()}>
+      <Link href="/mission" className={buttonClassName({ size: "row" })}>
         {inProgress ? "▶ 수학 퀴즈 이어서 풀기" : "✏️ 수학 퀴즈 시작하기"}
       </Link>
     ),
@@ -45,7 +45,7 @@ export function MissionHero({ mission, attempts, semester }: MissionHeroProps) {
     barColor: "bg-primary",
     note: `지금까지 필요한 진도 ${semester.required}문제`,
     action: (
-      <Link href="/practice" className={buttonClassName({ variant: "secondary" })}>
+      <Link href="/practice" className={buttonClassName({ variant: "secondary", size: "row" })}>
         📘 오늘의 단원 연습
       </Link>
     ),
@@ -60,7 +60,7 @@ export function MissionHero({ mission, attempts, semester }: MissionHeroProps) {
     barColor: "bg-xp",
     note: semester.mockOpen ? "모의고사를 볼 수 있어요" : "진도와 정답률이 채워지면 열려요",
     action: (
-      <span className={`${buttonClassName({ variant: "secondary" })} pointer-events-none opacity-50`} aria-disabled="true">
+      <span className={`${buttonClassName({ variant: "secondary", size: "row" })} pointer-events-none opacity-50`} aria-disabled="true">
         {semester.mockOpen ? "🎯 레벨업 모의고사 (준비 중)" : "🔒 레벨업 모의고사"}
       </span>
     ),

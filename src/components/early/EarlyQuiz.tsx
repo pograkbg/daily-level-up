@@ -16,6 +16,8 @@ interface EarlyQuizProps {
   grade: number;
   /** 모의고사: 통과에 필요한 정답 수. 있으면 결과 화면에 통과 여부를 보여 줍니다. */
   passScore?: number;
+  /** 나가기(X·홈으로 가기) 목적지. 2학년 이상은 홈, 유아·1학년은 놀이 목록(/early) */
+  exitHref?: string;
 }
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -29,7 +31,7 @@ function clockMs(): number {
  * 유아·1학년 문제 풀이 화면. 한 문제에 보기 4개 중 하나를 고릅니다.
  * 정답 소리는 기존과 같고, 기록은 아이 정보로 저장됩니다.
  */
-export function EarlyQuiz({ title, subject, items, grade, passScore }: EarlyQuizProps) {
+export function EarlyQuiz({ title, subject, items, grade, passScore, exitHref = "/early" }: EarlyQuizProps) {
   const [index, setIndex] = useState(0);
   const [chosen, setChosen] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -69,7 +71,7 @@ export function EarlyQuiz({ title, subject, items, grade, passScore }: EarlyQuiz
     return (
       <div className="mx-auto flex w-full max-w-md flex-col items-center gap-4 rounded-[2rem] bg-white p-8 text-center shadow-xl">
         <p className="text-lg font-extrabold text-ink">아직 문제가 없어요.</p>
-        <Link href="/early" className="font-bold text-primary-dark underline">
+        <Link href={exitHref}className="font-bold text-primary-dark underline">
           다시 고르기
         </Link>
       </div>
@@ -94,7 +96,7 @@ export function EarlyQuiz({ title, subject, items, grade, passScore }: EarlyQuiz
           </p>
         )}
         <div className="flex w-full flex-col gap-3 sm:flex-row">
-          <Link href="/early" className="flex min-h-14 flex-1 items-center justify-center rounded-2xl bg-primary font-bold text-white">
+          <Link href={exitHref}className="flex min-h-14 flex-1 items-center justify-center rounded-2xl bg-primary font-bold text-white">
             다른 놀이 하기
           </Link>
           <Link href="/" className="flex min-h-14 flex-1 items-center justify-center rounded-2xl bg-ink/5 font-bold text-ink">
@@ -144,7 +146,7 @@ export function EarlyQuiz({ title, subject, items, grade, passScore }: EarlyQuiz
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
       <div className="flex items-center gap-4">
-        <Link href="/early" aria-label="놀이 닫기" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-xl font-bold text-ink shadow-md">
+        <Link href={exitHref}aria-label="놀이 닫기" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-xl font-bold text-ink shadow-md">
           ✕
         </Link>
         <div className="flex min-w-0 flex-1 flex-col gap-2">
